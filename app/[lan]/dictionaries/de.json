@@ -1,0 +1,375 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "pricing": "Preise"
+  },
+  "footer": {
+    "sprengnetterAVM": "Sprengnetter AVM",
+    "quisitor": "QUISITOR",
+    "geomap": "GeoMap",
+    "sprengnetter": "Sprengnetter",
+    "maps21": "Maps21"
+  },
+  "requestDemo": "Demo anfordern",
+  "initial": {
+    "label": "Datengetriebene Immobilienintelligenz",
+    "heading1": "Immobilienbewertung.",
+    "heading2": "In Sekunden.",
+    "subHeading": "Nicht Wochen.",
+    "description": "Professionelle AVM-Bewertung mit über 20 Datenpunkten. Aggregiert aus 4 unabhängigen Datenquellen. Für Käufer, Eigentümer und Fachleute.",
+    "startBtn": "Bewertung starten",
+    "demoBtn": "Live-Demo"
+  },
+  "search": {
+    "label": "Adresse eingeben",
+    "placeholder": "Straße, Postleitzahl, Stadt...",
+    "examples": "Beispiele"
+  },
+  "analysis": {
+    "analyzing": "Analyse läuft für",
+    "steps": [
+      { "label": "Standortdaten laden", "sub": "Geodaten & Infrastruktur" },
+      { "label": "Vergleichsobjekte suchen", "sub": "Transaktionsdatenbank" },
+      { "label": "Marktanalyse", "sub": "Angebots- & Nachfragedaten" },
+      { "label": "KI-Bewertungsmodell", "sub": "Hedonisches Preismodell" },
+      { "label": "Qualitätsprüfung", "sub": "Konfidenzberechnung" },
+      { "label": "Report generieren", "sub": "PDF & Dashboard" }
+    ]
+  },
+  "address": [
+    {
+      "id": "01",
+      "address": "München",
+      "addressLong": "Marienplatz 1, 80331 München"
+    },
+    {
+      "id": "02",
+      "address": "Berlin",
+      "addressLong": "Kurfürstendamm 21, 10719 Berlin"
+    },
+    {
+      "id": "03",
+      "address": "Hamburg",
+      "addressLong": "Große Bleichen 5, 20354 Hamburg"
+    }
+  ],
+  "summary": {
+    "01": {
+      "city": "Marienplatz 1, 80331 München",
+      "marktwert": 785000,
+      "spanne": [720000, 850000],
+      "qm_preis": 9812,
+      "baujahr": 1952,
+      "wohnflaeche": 80,
+      "zimmer": 3,
+      "etage": "2. OG",
+      "lage_score": 96,
+      "lage_sub": {
+        "mikrolage": 97,
+        "makrolage": 95,
+        "infrastruktur": 98,
+        "sozial": 94
+      },
+      "trend_1j": 4.2,
+      "trend_5j": 38.7,
+      "bodenrichtwert": 28000,
+      "miete_kalt": 22.4,
+      "mietmultiplikator": 29.2,
+      "vermarktung_tage": 14,
+      "rendite_brutto": 3.42,
+      "prognose_1j": 3.8,
+      "comparables": [
+        {
+          "addr": "Sendlinger Str. 12",
+          "preis": 795000,
+          "qm": 82,
+          "dist": "180m",
+          "bj": 1960,
+          "qm_p": 9695
+        },
+        {
+          "addr": "Rindermarkt 6",
+          "preis": 720000,
+          "qm": 74,
+          "dist": "250m",
+          "bj": 1948,
+          "qm_p": 9730
+        },
+        {
+          "addr": "Tal 22",
+          "preis": 835000,
+          "qm": 85,
+          "dist": "320m",
+          "bj": 1955,
+          "qm_p": 9824
+        }
+      ],
+      "preisverlauf": [
+        { "j": "2020", "p": 7200 },
+        { "j": "2021", "p": 7850 },
+        { "j": "2022", "p": 8900 },
+        { "j": "2023", "p": 9100 },
+        { "j": "2024", "p": 9400 },
+        { "j": "2025", "p": 9812 }
+      ],
+      "mietverlauf": [
+        { "j": "2020", "p": 17.2 },
+        { "j": "2021", "p": 18.1 },
+        { "j": "2022", "p": 19.8 },
+        { "j": "2023", "p": 20.5 },
+        { "j": "2024", "p": 21.4 },
+        { "j": "2025", "p": 22.4 }
+      ],
+      "infrastruktur": [
+        { "de": "ÖPNV", "en": "ÖPNV", "val": "1 min", "icon": "🚇" },
+        {
+          "de": "Grundschule",
+          "en": "Grundschule",
+          "val": "5 min",
+          "icon": "🏫"
+        },
+        { "de": "Gymnasium", "en": "Gymnasium", "val": "8 min", "icon": "🎓" },
+        { "de": "Hausarzt", "en": "Arzt", "val": "3 min", "icon": "🏥" },
+        {
+          "de": "Supermarkt",
+          "en": "Supermarkt",
+          "val": "2 min",
+          "icon": "🛒"
+        },
+        { "de": "Apotheke", "en": "Apotheke", "val": "2 min", "icon": "💊" },
+        {
+          "de": "Restaurant",
+          "en": "Restaurant",
+          "val": "1 min",
+          "icon": "🍽"
+        },
+        { "de": "Park/Grün", "en": "Park/Grün", "val": "4 min", "icon": "🌳" }
+      ],
+      "sozio": {
+        "kaufkraft_idx": 128,
+        "altersschnitt": 38,
+        "einwohner_qkm": 4700,
+        "arbeitslosenquote": 3.1,
+        "akademiker_anteil": 52
+      },
+      "quellen": ["Sprengnetter AVM", "QUIS", "GeoMap", "Sprengnetter Maps"],
+      "confidence": 94,
+      "marktlage_de": "Verkäufermarkt",
+      "marktlage_en": "Seller's Market",
+      "marktlage_type": "sell",
+      "angebote_aktuell": 12
+    },
+
+    "02": {
+      "city": "Kurfürstendamm 21, 10719 Berlin",
+      "marktwert": 620000,
+      "spanne": [570000, 680000],
+      "qm_preis": 7750,
+      "baujahr": 1910,
+      "wohnflaeche": 80,
+      "zimmer": 3,
+      "etage": "3. OG",
+      "lage_score": 92,
+      "lage_sub": {
+        "mikrolage": 93,
+        "makrolage": 91,
+        "infrastruktur": 95,
+        "sozial": 89
+      },
+      "trend_1j": 5.8,
+      "trend_5j": 42.1,
+      "bodenrichtwert": 18500,
+      "miete_kalt": 18.9,
+      "mietmultiplikator": 27.4,
+      "vermarktung_tage": 18,
+      "rendite_brutto": 3.66,
+      "prognose_1j": 5.2,
+      "comparables": [
+        {
+          "addr": "Fasanenstr. 8",
+          "preis": 595000,
+          "qm": 76,
+          "dist": "200m",
+          "bj": 1905,
+          "qm_p": 7829
+        },
+        {
+          "addr": "Uhlandstr. 44",
+          "preis": 640000,
+          "qm": 82,
+          "dist": "350m",
+          "bj": 1912,
+          "qm_p": 7805
+        },
+        {
+          "addr": "Lietzenburger Str. 15",
+          "preis": 580000,
+          "qm": 78,
+          "dist": "280m",
+          "bj": 1920,
+          "qm_p": 7436
+        }
+      ],
+      "preisverlauf": [
+        { "j": "2020", "p": 5400 },
+        { "j": "2021", "p": 5900 },
+        { "j": "2022", "p": 6800 },
+        { "j": "2023", "p": 7100 },
+        { "j": "2024", "p": 7350 },
+        { "j": "2025", "p": 7750 }
+      ],
+      "mietverlauf": [
+        { "j": "2020", "p": 13.8 },
+        { "j": "2021", "p": 14.5 },
+        { "j": "2022", "p": 16.2 },
+        { "j": "2023", "p": 17.0 },
+        { "j": "2024", "p": 18.1 },
+        { "j": "2025", "p": 18.9 }
+      ],
+      "infrastruktur": [
+        { "de": "ÖPNV", "en": "ÖPNV", "val": "1 min", "icon": "🚇" },
+        {
+          "de": "Grundschule",
+          "en": "Grundschule",
+          "val": "7 min",
+          "icon": "🏫"
+        },
+        { "de": "Gymnasium", "en": "Gymnasium", "val": "10 min", "icon": "🎓" },
+        { "de": "Hausarzt", "en": "Arzt", "val": "4 min", "icon": "🏥" },
+        {
+          "de": "Supermarkt",
+          "en": "Supermarkt",
+          "val": "3 min",
+          "icon": "🛒"
+        },
+        { "de": "Apotheke", "en": "Apotheke", "val": "3 min", "icon": "💊" },
+        {
+          "de": "Restaurant",
+          "en": "Restaurant",
+          "val": "1 min",
+          "icon": "🍽"
+        },
+        { "de": "Park/Grün", "en": "Park/Grün", "val": "6 min", "icon": "🌳" }
+      ],
+      "sozio": {
+        "kaufkraft_idx": 118,
+        "altersschnitt": 36,
+        "einwohner_qkm": 3900,
+        "arbeitslosenquote": 5.2,
+        "akademiker_anteil": 48
+      },
+      "quellen": ["Sprengnetter AVM", "QUIS", "GeoMap", "Sprengnetter Maps"],
+      "confidence": 91,
+      "marktlage_de": "Ausgewogen",
+      "marktlage_en": "Balanced",
+      "marktlage_type": "bal",
+      "angebote_aktuell": 28
+    },
+
+    "03": {
+      "city": "Große Bleichen 5, 20354 Hamburg",
+      "marktwert": 540000,
+      "spanne": [490000, 590000],
+      "qm_preis": 6750,
+      "baujahr": 1965,
+      "wohnflaeche": 80,
+      "zimmer": 3,
+      "etage": "4. OG",
+      "lage_score": 89,
+      "lage_sub": {
+        "mikrolage": 90,
+        "makrolage": 88,
+        "infrastruktur": 91,
+        "sozial": 87
+      },
+      "trend_1j": 3.1,
+      "trend_5j": 29.4,
+      "bodenrichtwert": 15200,
+      "miete_kalt": 16.8,
+      "mietmultiplikator": 26.8,
+      "vermarktung_tage": 22,
+      "rendite_brutto": 3.73,
+      "prognose_1j": 2.9,
+      "comparables": [
+        {
+          "addr": "Neuer Wall 18",
+          "preis": 580000,
+          "qm": 84,
+          "dist": "150m",
+          "bj": 1970,
+          "qm_p": 6905
+        },
+        {
+          "addr": "Jungfernstieg 33",
+          "preis": 560000,
+          "qm": 78,
+          "dist": "300m",
+          "bj": 1958,
+          "qm_p": 7179
+        },
+        {
+          "addr": "Colonnaden 7",
+          "preis": 510000,
+          "qm": 76,
+          "dist": "400m",
+          "bj": 1962,
+          "qm_p": 6711
+        }
+      ],
+      "preisverlauf": [
+        { "j": "2020", "p": 5100 },
+        { "j": "2021", "p": 5500 },
+        { "j": "2022", "p": 6200 },
+        { "j": "2023", "p": 6400 },
+        { "j": "2024", "p": 6550 },
+        { "j": "2025", "p": 6750 }
+      ],
+      "mietverlauf": [
+        { "j": "2020", "p": 12.8 },
+        { "j": "2021", "p": 13.4 },
+        { "j": "2022", "p": 14.9 },
+        { "j": "2023", "p": 15.5 },
+        { "j": "2024", "p": 16.2 },
+        { "j": "2025", "p": 16.8 }
+      ],
+      "infrastruktur": [
+        { "de": "ÖPNV", "en": "ÖPNV", "val": "2 min", "icon": "🚇" },
+        {
+          "de": "Grundschule",
+          "en": "Grundschule",
+          "val": "8 min",
+          "icon": "🏫"
+        },
+        { "de": "Gymnasium", "en": "Gymnasium", "val": "12 min", "icon": "🎓" },
+        { "de": "Hausarzt", "en": "Arzt", "val": "5 min", "icon": "🏥" },
+        {
+          "de": "Supermarkt",
+          "en": "Supermarkt",
+          "val": "4 min",
+          "icon": "🛒"
+        },
+        { "de": "Apotheke", "en": "Apotheke", "val": "4 min", "icon": "💊" },
+        {
+          "de": "Restaurant",
+          "en": "Restaurant",
+          "val": "2 min",
+          "icon": "🍽"
+        },
+        { "de": "Park/Grün", "en": "Park/Grün", "val": "5 min", "icon": "🌳" }
+      ],
+      "sozio": {
+        "kaufkraft_idx": 112,
+        "altersschnitt": 40,
+        "einwohner_qkm": 2800,
+        "arbeitslosenquote": 4.8,
+        "akademiker_anteil": 44
+      },
+      "quellen": ["Sprengnetter AVM", "QUIS", "GeoMap", "Sprengnetter Maps"],
+      "confidence": 88,
+      "marktlage_de": "Käufermarkt",
+      "marktlage_en": "Buyer's Market",
+      "marktlage_type": "buy",
+      "angebote_aktuell": 35
+    }
+  }
+}
