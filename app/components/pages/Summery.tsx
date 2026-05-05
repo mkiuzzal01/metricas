@@ -5,6 +5,8 @@ import { useAppSelector } from '@/app/redux/hooks';
 import { eur, safe } from '../lib/currency';
 import SectionHeader from '../shared/SectionHeader';
 
+type SummaryKey = '01' | '02' | '03' | '04' | '05' | '06';
+
 interface Props {
   dic: any;
 }
@@ -63,6 +65,7 @@ function SubScoreBar({ label, value }: { label: string; value: number }) {
 export default function Summery({ dic }: Props) {
   const { summaryId } = useAppSelector((state) => state.survey);
   const data = dic?.summary?.[summaryId];
+  const label = dic?.summaryLabel;
 
   if (!data) {
     return (
@@ -93,7 +96,7 @@ export default function Summery({ dic }: Props) {
         </div>
 
         <div className="inline-block text-[9px] uppercase tracking-[0.3em] text-[rgba(90,158,142,0.9)] bg-[rgba(90,158,142,0.08)] border border-[rgba(90,158,142,0.2)] px-2.5 py-1 rounded-sm mb-4">
-          Marktwertermittlung
+          {label[0]}
         </div>
 
         <div
@@ -104,17 +107,18 @@ export default function Summery({ dic }: Props) {
         </div>
 
         <div className="font-mono text-[11px] tracking-[0.1em] text-[#3a4a5c] mt-2">
-          Spanne: € {eur(data.spanne?.[0])} — € {eur(data.spanne?.[1])}
+          {data.spanneLabel}: € {eur(data.spanne?.[0])} — €{' '}
+          {eur(data.spanne?.[1])}
         </div>
 
         <div className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 bg-[rgba(90,158,142,0.08)] border border-[rgba(90,158,142,0.2)] rounded-full text-[10px] text-[rgba(90,158,142,0.9)] uppercase font-semibold tracking-[0.15em]">
           <span className="w-1.5 h-1.5 bg-[rgba(90,158,142,0.9)] rounded-full animate-pulse" />
-          Konfidenz {safe(data.confidence)}%
+          {label?.[0]} {safe(data.confidence)}%
         </div>
       </div>
 
       {/* ═════ KEY METRICS ═════ */}
-      <SectionHeader label="Kernkennzahlen" />
+      <SectionHeader label={label[0]} />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <KPICard
           label="Preis / m²"
@@ -140,7 +144,7 @@ export default function Summery({ dic }: Props) {
       </div>
 
       {/* ═════ LOCATION SCORE ═════ */}
-      <SectionHeader label="Standortanalyse" />
+      <SectionHeader label={label[1]} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {/* big score */}
         <div className="bg-[#0d1520] border border-white/[0.06] rounded-md p-6 text-center relative overflow-hidden">
@@ -152,7 +156,7 @@ export default function Summery({ dic }: Props) {
             }}
           />
           <div className="text-[9px] uppercase tracking-[0.2em] text-[#7f8ea3] mb-2">
-            Lage-Score
+            {label[1]}
           </div>
           <div
             className="text-[52px] text-[rgba(90,158,142,0.95)] leading-none"
@@ -169,20 +173,29 @@ export default function Summery({ dic }: Props) {
         <div className="bg-[#0d1520] border border-white/[0.06] rounded-md p-5 flex flex-col justify-center gap-3">
           {data.lage_sub && (
             <>
-              <SubScoreBar label="Mikrolage" value={data.lage_sub.mikrolage} />
-              <SubScoreBar label="Makrolage" value={data.lage_sub.makrolage} />
               <SubScoreBar
-                label="Infrastruktur"
+                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[1]}`}
+                value={data.lage_sub.mikrolage}
+              />
+              <SubScoreBar
+                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[2]}`}
+                value={data.lage_sub.makrolage}
+              />
+              <SubScoreBar
+                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[3]}`}
                 value={data.lage_sub.infrastruktur}
               />
-              <SubScoreBar label="Sozial" value={data.lage_sub.sozial} />
+              <SubScoreBar
+                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[4]}`}
+                value={data.lage_sub.sozial}
+              />
             </>
           )}
         </div>
       </div>
 
       {/* ═════ MARKET DATA ═════ */}
-      <SectionHeader label="Marktdaten" />
+      <SectionHeader label={label[2]} />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <KPICard
           label="Kaltmiete /m²"
@@ -204,7 +217,7 @@ export default function Summery({ dic }: Props) {
       </div>
 
       {/* ═════ PROPERTY DETAILS ═════ */}
-      <SectionHeader label="Objektdaten" />
+      <SectionHeader label={label[4]} />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <KPICard label="Zimmer" value={safe(data.zimmer)} />
         <KPICard
@@ -216,7 +229,7 @@ export default function Summery({ dic }: Props) {
       </div>
 
       {/* ═════ COMPARABLES ═════ */}
-      <SectionHeader label="Vergleichsobjekte" />
+      <SectionHeader label={label[3]} />
       <div className="bg-[#0d1520] border border-white/[0.06] rounded-md overflow-hidden">
         {data.comparables?.length ? (
           data.comparables.map((c: any, i: number) => (
@@ -253,7 +266,7 @@ export default function Summery({ dic }: Props) {
       </div>
 
       {/* ═════ INFRASTRUCTURE ═════ */}
-      <SectionHeader label="Infrastruktur" />
+      <SectionHeader label={label[5]} />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
         {data.infrastruktur?.length ? (
           data.infrastruktur.map((item: any, i: number) => (
@@ -280,7 +293,7 @@ export default function Summery({ dic }: Props) {
       {/* ═════ QUARTIERSPROFIL ═════ */}
       {data.sozio && (
         <>
-          <SectionHeader label="Quartiersprofil" />
+          <SectionHeader label={label[6]} />
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <KPICard
               label="Kaufkraft-Index"

@@ -53,6 +53,14 @@
       "addressLong": "Große Bleichen 5, 20354 Hamburg"
     }
   ],
+  "summaryLabel": [
+    "Key Metrics",
+    "Location Analysis",
+    "Market Data",
+    "Comparable Properties",
+    "Infrastructure",
+    "Neighborhood Profile"
+  ],
   "summary": {
     "01": {
       "city": "Marienplatz 1, 80331 München",
