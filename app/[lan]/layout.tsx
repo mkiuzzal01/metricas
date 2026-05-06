@@ -7,16 +7,16 @@ export default async function Layout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lan: 'en' | 'de' }>;
+  params: Promise<{ lan: string }>;
 }>) {
   const { lan } = await params;
   if (!lan) notFound();
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar lan={lan} />
+      <Navbar lan={lan as 'en' | 'de'} />
       <main className="flex-1">{children}</main>
-      <Footer lan={lan} />
+      <Footer lan={lan as 'en' | 'de'} />
     </div>
   );
 }
