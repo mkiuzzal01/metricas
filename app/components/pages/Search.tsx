@@ -52,7 +52,7 @@ export default function SearchInput({ dic }: Props) {
       </h1>
 
       {/* Input */}
-      <div className="relative w-[420px]">
+      <div className="relative w-[370px] lg:w-[420px] ">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5a9e8e]">
           ⌕
         </span>
@@ -82,7 +82,7 @@ export default function SearchInput({ dic }: Props) {
 
       {/* Suggestions */}
       {open && suggestions.length > 0 && (
-        <div className="mt-3 flex w-[420px] flex-col gap-1">
+        <div className="mt-3 flex w-[370px] lg:w-[420px] flex-col gap-1">
           {suggestions.map((item: any) => (
             <button
               key={item.id}
@@ -112,8 +112,8 @@ export default function SearchInput({ dic }: Props) {
       )}
 
       {/* Examples */}
-      <div className="mt-8 flex w-[420px] flex-wrap items-center gap-2.5">
-        <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-[#30455a]">
+      <div className="mt-8 flex flex-wrap items-center gap-2.5">
+        <span className="text-[8px] lg:text-[10px] font-medium uppercase tracking-[0.25em] text-[#30455a]">
           {dic.search.examples}:
         </span>
 
@@ -126,7 +126,7 @@ export default function SearchInput({ dic }: Props) {
             }}
             className="
               rounded-sm border border-white/10 px-4 py-2
-              text-[11px] font-medium uppercase tracking-[0.25em] text-[#30455a]
+              text-[8px] lg:text-[11px] font-medium uppercase tracking-[0.25em] text-[#30455a]
               transition hover:border-[#5a9e8e]/40 hover:text-[#5a9e8e]
             "
           >

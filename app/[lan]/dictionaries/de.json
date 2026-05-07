@@ -65,6 +65,7 @@
     "01": {
       "city": "Marienplatz 1, 80331 München",
       "marktwert": 785000,
+      "spanneLabel": "Spanne",
       "spanne": [720000, 850000],
       "qm_preis": 9812,
       "baujahr": 1952,
@@ -171,6 +172,7 @@
     "02": {
       "city": "Kurfürstendamm 21, 10719 Berlin",
       "marktwert": 620000,
+      "spanneLabel": "Spanne",
       "spanne": [570000, 680000],
       "qm_preis": 7750,
       "baujahr": 1910,
@@ -277,6 +279,7 @@
     "03": {
       "city": "Große Bleichen 5, 20354 Hamburg",
       "marktwert": 540000,
+      "spanneLabel": "Spanne",
       "spanne": [490000, 590000],
       "qm_preis": 6750,
       "baujahr": 1965,
@@ -379,5 +382,6 @@
       "marktlage_type": "buy",
       "angebote_aktuell": 35
     }
-  }
+  },
+  "actionButton": ["PDF herunterladen", "Bewertung starten"]
 }

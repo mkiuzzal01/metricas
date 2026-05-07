@@ -4,82 +4,25 @@
 import { useAppSelector } from '@/app/redux/hooks';
 import { eur, safe } from '../lib/currency';
 import SectionHeader from '../shared/SectionHeader';
-
-type SummaryKey = '01' | '02' | '03' | '04' | '05' | '06';
+import KPICard from '../shared/KPICard';
+import SubScoreBar from '../shared/SubScoreBar';
+import Empty from '../shared/Empty';
+import RefreshAction from '../util/RefreshAction';
 
 interface Props {
   dic: any;
-}
-
-function KPICard({
-  label,
-  value,
-  sub,
-  accent = false,
-  large = false,
-}: {
-  label: string;
-  value: any;
-  sub?: string;
-  accent?: boolean;
-  large?: boolean;
-}) {
-  return (
-    <div className="bg-[#0d1520] border border-white/[0.06] rounded-md p-4 hover:border-white/10 transition-colors">
-      <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#7f8ea3] mb-2">
-        {label}
-      </div>
-      <div
-        className={`font-serif leading-none ${
-          large ? 'text-[17px]' : 'text-[22px]'
-        } ${accent ? 'text-[rgba(90,158,142,0.95)]' : 'text-[#dce4ec]'}`}
-      >
-        {value ?? '-'}
-      </div>
-      {sub && (
-        <div className="text-[9px] text-[#7f8ea3] mt-1 font-mono">{sub}</div>
-      )}
-    </div>
-  );
-}
-
-function SubScoreBar({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <span className="text-[10px] text-[#7f8ea3] w-[68px] shrink-0">
-        {label}
-      </span>
-      <div className="flex-1 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-[rgba(90,158,142,0.9)] to-[rgba(90,158,142,0.4)] rounded-full"
-          style={{ width: `${value}%` }}
-        />
-      </div>
-      <span className="font-mono text-[10px] text-[#dce4ec] w-6 text-right">
-        {value}
-      </span>
-    </div>
-  );
 }
 
 export default function Summery({ dic }: Props) {
   const { summaryId } = useAppSelector((state) => state.survey);
   const data = dic?.summary?.[summaryId];
   const label = dic?.summaryLabel;
+  const actionButtons = dic?.actionButton;
 
-  if (!data) {
-    return (
-      <div className="p-6 text-[#7f8ea3] font-mono text-sm">
-        No valuation data available
-      </div>
-    );
-  }
+  if (!data) return <Empty />;
 
   return (
-    <div
-      className="relative z-10 max-w-3xl mx-auto px-5 pb-24"
-      style={{ fontFamily: "'DM Sans', sans-serif" }}
-    >
+    <div className="relative z-10 max-w-3xl mx-auto px-5 pb-24">
       {/* ═════ HEADER ═════ */}
       <div className="text-center py-12 border-b border-white/[0.06] mb-2 relative">
         {/* top glow line */}
@@ -155,16 +98,13 @@ export default function Summery({ dic }: Props) {
                 'radial-gradient(ellipse at center bottom, rgba(90,158,142,0.08) 0%, transparent 70%)',
             }}
           />
-          <div className="text-[9px] uppercase tracking-[0.2em] text-[#7f8ea3] mb-2">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-[#7f8ea3] mb-2">
             {label[1]}
           </div>
-          <div
-            className="text-[52px] text-[rgba(90,158,142,0.95)] leading-none"
-            style={{ fontFamily: "'DM Serif Display', serif" }}
-          >
+          <div className="text-[52px] text-[rgba(90,158,142,0.95)] leading-none">
             {safe(data.lage_score)}
           </div>
-          <div className="font-mono text-[9px] text-[#7f8ea3] mt-2 tracking-[0.1em]">
+          <div className="font-mono text-[11px] text-[#7f8ea3] mt-2 tracking-[0.1em]">
             Mikro · Makro · Infra
           </div>
         </div>
@@ -274,11 +214,11 @@ export default function Summery({ dic }: Props) {
               key={i}
               className="flex items-center gap-2 px-3 py-2.5 bg-[#0d1520] border border-white/[0.06] rounded hover:border-white/10 transition-colors"
             >
-              <span className="text-[14px] shrink-0">{item.icon}</span>
-              <span className="flex-1 text-[10px] text-[#7f8ea3]">
+              <span className="text-[15px] shrink-0">{item.icon}</span>
+              <span className="flex-1 text-[12px] text-[#7f8ea3]">
                 {item.de || item.en || '-'}
               </span>
-              <span className="font-mono text-[10px] text-[rgba(90,158,142,0.9)] font-medium shrink-0">
+              <span className="font-mono text-[12px] text-[rgba(90,158,142,0.9)] font-medium shrink-0">
                 {item.val || '-'}
               </span>
             </div>
@@ -346,11 +286,13 @@ export default function Summery({ dic }: Props) {
       {/* ═════ ACTIONS ═════ */}
       <div className="grid grid-cols-2 gap-2 mt-9">
         <button className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-[rgba(90,158,142,0.9)] text-[#080d12] hover:bg-[rgba(90,158,142,1)] transition-colors cursor-pointer">
-          PDF Herunterladen
+          {actionButtons[0]}
         </button>
-        <button className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-transparent border border-white/10 text-[#7f8ea3] hover:border-[rgba(90,158,142,0.5)] hover:text-[rgba(90,158,142,0.9)] transition-colors cursor-pointer">
-          Neue Bewertung
-        </button>
+        <RefreshAction>
+          <div className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-transparent border border-white/10 text-[#7f8ea3] hover:border-[rgba(90,158,142,0.5)] hover:text-[rgba(90,158,142,0.9)] transition-colors cursor-pointer">
+            {actionButtons[1]}
+          </div>
+        </RefreshAction>
       </div>
     </div>
   );

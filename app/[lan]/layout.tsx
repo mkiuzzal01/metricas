@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import Navbar from '../components/layouts/Navbar';
 import Footer from '../components/layouts/Footer';
+import Navigation from '../components/layouts/Navigation';
 
 export default async function Layout({
   children,
@@ -14,7 +14,7 @@ export default async function Layout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar lan={lan as 'en' | 'de'} />
+      <Navigation lan={lan as 'en' | 'de'} />
       <main className="flex-1">{children}</main>
       <Footer lan={lan as 'en' | 'de'} />
     </div>
