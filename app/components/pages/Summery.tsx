@@ -8,6 +8,7 @@ import KPICard from '../shared/KPICard';
 import SubScoreBar from '../shared/SubScoreBar';
 import Empty from '../shared/Empty';
 import RefreshAction from '../util/RefreshAction';
+import ScrollToTop from '../shared/buttons/ScrollToTop';
 
 interface Props {
   dic: any;
@@ -294,6 +295,7 @@ export default function Summery({ dic }: Props) {
           </div>
         </RefreshAction>
       </div>
+      <ScrollToTop />
     </div>
   );
 }
