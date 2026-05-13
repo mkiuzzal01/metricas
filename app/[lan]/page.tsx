@@ -11,7 +11,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="flex justify-center items-center">
-      <StartSurvey dic={dic} />
+      <StartSurvey lan={lan} dic={dic} />
     </div>
   );
 }

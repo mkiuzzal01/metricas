@@ -7,15 +7,16 @@ import Summery from './Summery';
 import Analyze from './Analyze';
 
 interface Props {
+  lan: 'en' | 'de';
   dic: any;
 }
 
-export default function StartSurvey({ dic }: Props) {
+export default function StartSurvey({ lan, dic }: Props) {
   const step = useAppSelector((state) => state.survey.step);
 
   switch (step) {
     case 'initialView':
-      return <InitialView dic={dic} />;
+      return <InitialView lan={lan} dic={dic} />;
     case 'search':
       return <Search dic={dic} />;
     case 'analysis':

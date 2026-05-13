@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import { nextStep } from '@/app/redux/features/surveySlice';
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useRouter } from 'next/navigation';
 
 interface Props {
+  lan: 'en' | 'de';
   dic: any;
 }
 
-export default function InitialView({ dic }: Props) {
-  const dispatch = useAppDispatch();
+export default function InitialView({ lan, dic }: Props) {
+  const router = useRouter();
+
+  const handleStart = () => {
+    router.push(`/${lan}/search`);
+  };
 
   return (
     <div className="flex flex-col justify-center min-h-[calc(100vh-64px)] px-8 max-w-hero mx-auto">
@@ -38,14 +42,14 @@ export default function InitialView({ dic }: Props) {
       {/* Actions */}
       <div className="flex gap-3.5 flex-wrap fade-up fade-up-d4">
         <button
-          onClick={() => dispatch(nextStep())}
+          onClick={handleStart}
           className="text-[11px] font-semibold tracking-[0.25em] uppercase px-9 py-4 bg-white text-black rounded-sm transition-all hover:opacity-90 active:scale-[0.97]"
         >
           {dic.initial.startBtn}
         </button>
 
         <button
-          onClick={() => dispatch(nextStep())}
+          onClick={handleStart}
           className="text-[11px] font-medium tracking-[0.25em] uppercase px-9 py-4 bg-transparent text-[#30455a] border border-white/10 rounded-sm transition-all hover:border-[#5a9e8e]/40 hover:text-[#5a9e8e]"
         >
           {dic.initial.demoBtn}

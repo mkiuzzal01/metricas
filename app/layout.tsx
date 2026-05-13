@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
-import { Instrument_Serif } from 'next/font/google';
+import { Instrument_Serif, Geist } from 'next/font/google';
 import './globals.css';
 import StoreProvider from './components/provider/StoreProvider';
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const instrumentSerif = Instrument_Serif({
   variable: '--font-instrument-serif',
@@ -23,7 +26,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", instrumentSerif.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col">
         <StoreProvider>{children}</StoreProvider>
