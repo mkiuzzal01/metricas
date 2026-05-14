@@ -2,9 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-
 import LanToggle from '../shared/buttons/LanToggle';
-import RefreshAction from '../util/RefreshAction';
 import { NavigationLink } from './navigation-links';
 
 interface Props {
@@ -19,7 +17,7 @@ export default function Navbar({ navLinks, dic }: Props) {
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0a0e14]/80 backdrop-blur-xl">
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6">
         {/* Logo */}
-        <RefreshAction>
+        <Link href={'/'}>
           <div className="flex cursor-pointer items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-linear-to-tr from-[#111927] to-[#0a0e14] text-sm font-bold text-[#5a9e8e]">
               M
@@ -29,7 +27,7 @@ export default function Navbar({ navLinks, dic }: Props) {
               METRICAS
             </span>
           </div>
-        </RefreshAction>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-2 lg:flex">

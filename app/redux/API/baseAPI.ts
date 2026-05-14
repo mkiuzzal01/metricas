@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createApi,
@@ -31,10 +32,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // Handle 401 - token expired
   if (result?.error?.status === 401) {
     try {
-      // Try to refresh the token
       const refreshResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh-token`,
         {
@@ -53,7 +52,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
         if (currentUser) {
           api.dispatch(
             setUser({
-              user: currentUser,
+              user: {
+                id: currentUser?.userId || '',
+                email: currentUser?.email || '',
+                role: currentUser?.role || '',
+                name: currentUser?.name || '',
+                avatar: currentUser?.avatar || '',
+              },
               token: refreshData.data.accessToken,
             }),
           );

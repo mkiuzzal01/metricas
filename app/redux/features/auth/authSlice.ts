@@ -1,53 +1,3 @@
-// import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-// import type { RootState } from "../../store";
-
-// export type TUser = {
-//   id: string;
-//   role: string;
-//   iat: number;
-//   exp: number;
-// };
-
-// type TAuthState = {
-//   user: TUser | null;
-//   token: string | null;
-// };
-
-// const initialState: TAuthState = {
-//   user: null,
-//   token: null,
-// };
-
-// const authSlice = createSlice({
-//   name: "auth",
-//   initialState,
-//   reducers: {
-//     setUser: (state, action: PayloadAction<{ user: TUser; token: string }>) => {
-//       state.user = action.payload.user;
-//       state.token = action.payload.token;
-//     },
-//     updateUser: (state, action: PayloadAction<Partial<TUser>>) => {
-//       if (state.user) {
-//         state.user = { ...state.user, ...action.payload };
-//       }
-//     },
-//     logout: (state) => {
-//       state.user = null;
-//       state.token = null;
-//     },
-//   },
-// });
-
-// export const { setUser, updateUser, logout } = authSlice.actions;
-
-// // Export reducer
-// export default authSlice.reducer;
-
-// // Selectors
-// export const selectCurrentToken = (state: RootState) => state.auth.token;
-// export const selectCurrentUser = (state: RootState) => state.auth.user;
-
-// authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type TUser = {
@@ -55,29 +5,61 @@ export type TUser = {
   email: string;
   role: string;
   name?: string;
+  avatar?: string | null;
 };
 
 type TAuthState = {
-  user: null | TUser;
-  token: null | string;
+  user: TUser | null;
+  token: string | null;
+  tokenType?: string | null;
+  expiresAt?: string | null;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
+  tokenType: null,
+  expiresAt: null,
+};
+
+type LoginPayload = {
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    name: string;
+    avatar: string | null;
+  };
+  token: string;
+  tokenType?: string;
+  expiresAt?: string;
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{ user: TUser; token: string }>) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+    setUser: (state, action: PayloadAction<LoginPayload>) => {
+      const { user, token, tokenType, expiresAt } = action.payload;
+
+      state.user = {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        avatar: user.avatar ?? null,
+      };
+
+      state.token = token;
+      state.tokenType = tokenType ?? 'Bearer';
+      state.expiresAt = expiresAt ?? null;
     },
+
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.tokenType = null;
+      state.expiresAt = null;
     },
   },
 });
