@@ -6,11 +6,22 @@ import { Mail, Lock } from 'lucide-react';
 import AppForm from './AppForm';
 import Container from '../shared/Container';
 import Link from 'next/link';
+import { useLoginMutation } from '@/app/redux/features/auth/auth.api';
+import SubmitButton from '../shared/buttons/SubmitButton';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const [login, { isLoading }] = useLoginMutation();
+  const router = useRouter();
+
   const onSubmit = async (values: FieldValues, reset: () => void) => {
-    console.log(values);
-    reset();
+    const res = await login(values).unwrap();
+    if (res?.message) {
+      toast.success(res.message);
+      reset();
+      router.push('/en');
+    }
   };
 
   return (
@@ -57,16 +68,7 @@ export default function Login() {
             </div>
             {/* Actions */}
             <div className="mt-6 space-y-4">
-              <button
-                type="submit"
-                className="w-full py-3 rounded-lg text-sm font-medium tracking-wide
-                bg-[#5a9e8e]/10 text-[#5a9e8e]
-                border border-[#5a9e8e]/20
-                hover:bg-[#5a9e8e]/15 hover:border-[#5a9e8e]/40
-                transition-all duration-300"
-              >
-                Sign In
-              </button>
+              <SubmitButton isLoading={isLoading} title="Sign In" />
 
               <div className="text-center text-xs text-white/40">
                 Don’t have an account?{' '}

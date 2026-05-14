@@ -15,19 +15,16 @@ import SubmitButton from '../shared/buttons/SubmitButton';
 import { useParams } from 'next/navigation';
 
 export default function Registration() {
-  const router = useRouter();
   const params = useParams();
+  const router = useRouter();
   const [registerMember, { isLoading }] = useRegisterMutation();
 
   const onSubmit = async (values: FieldValues, reset: () => void) => {
     try {
       const res = await registerMember(values).unwrap();
-
       if (res?.message) {
         toast.success(res.message);
-
         reset();
-
         router.push(
           `/${params.lan}/verify?email=${encodeURIComponent(
             res?.data?.user?.email,

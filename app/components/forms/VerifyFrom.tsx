@@ -1,59 +1,100 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { FieldValues } from 'react-hook-form';
+import { useRouter, useParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 import Container from '../shared/Container';
 import AppForm from './AppForm';
 import OtpInput from './inputs/OTPInput';
+import SubmitButton from '../shared/buttons/SubmitButton';
+
 import {
   useResendOTPMutation,
   useVerifyOtpMutation,
 } from '@/app/redux/features/auth/auth.api';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import SubmitButton from '../shared/buttons/SubmitButton';
 
 interface Props {
   email?: string;
+  path?: string;
 }
 
-export default function VerifyForm({ email }: Props) {
-  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
-  const [resendOtp, { isLoading: isResendLoading }] = useResendOTPMutation();
+export default function VerifyForm({ email, path }: Props) {
   const router = useRouter();
+  const params = useParams();
 
+  const locale = (params.lan as string) || 'en';
+
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+
+  const [resendOtp, { isLoading: isResendLoading }] = useResendOTPMutation();
+
+  // ======================
+  // VERIFY OTP
+  // ======================
   const onSubmit = async (values: FieldValues, reset: () => void) => {
     try {
-      const res = await verifyOtp({ email, ...values }).unwrap();
-      if (res?.message) {
-        toast.success(res.message);
-        reset();
-        router.push('/login');
+      if (!email) {
+        toast.error('Email is missing');
+        return;
       }
+
+      const res = await verifyOtp({
+        email,
+        ...values,
+      }).unwrap();
+
+      toast.success(res?.message || 'Verification successful');
+
+      reset();
+
+      // Forgot password flow
+      if (path === 'forgot') {
+        router.push(
+          `/${locale}/reset?email=${encodeURIComponent(
+            email,
+          )}&t=${encodeURIComponent(res?.data?.token || '')}`,
+        );
+
+        return;
+      }
+
+      // Default flow
+      router.push(`/${locale}/login`);
     } catch (error: any) {
-      toast.error(error?.data?.message || 'Something went wrong');
+      toast.error(error?.data?.message || 'Verification failed');
     }
-    reset();
   };
 
+  // ======================
+  // RESEND OTP
+  // ======================
   const handleResendOTP = async () => {
     try {
-      const res = await resendOtp({ email }).unwrap();
-      if (res?.message) {
-        toast.success(res.message);
+      if (!email) {
+        toast.error('Email is missing');
+        return;
       }
+
+      const res = await resendOtp({
+        email,
+      }).unwrap();
+
+      toast.success(res?.message || 'OTP resent successfully');
     } catch (error: any) {
-      toast.error(error?.data?.message || 'Something went wrong');
+      toast.error(error?.data?.message || 'Failed to resend OTP');
     }
   };
 
   return (
     <Container className="flex items-center justify-center min-h-[calc(100vh-100px)] w-full relative metricas-bg">
       <AppForm onSubmit={onSubmit}>
-        <div className="w-full max-w-md relative z-10">
-          {/* Glow Background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl rounded-2xl" />
+        <div className="relative z-10 w-full max-w-md">
+          {/* Glow */}
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl" />
 
           {/* Card */}
           <div className="relative rounded-2xl border border-white/10 bg-[#0b111a]/70 backdrop-blur-xl p-8 shadow-2xl fade-up">
@@ -61,10 +102,9 @@ export default function VerifyForm({ email }: Props) {
             <div className="mb-8 flex flex-col items-center text-center">
               <div
                 className="
-                  mb-4 flex items-center justify-center
-                  w-14 h-14 rounded-full
+                  mb-4 flex h-14 w-14 items-center justify-center
+                  rounded-full border border-[#5a9e8e]/20
                   bg-[#5a9e8e]/10
-                  border border-[#5a9e8e]/20
                 "
               >
                 <ShieldCheck size={26} className="text-[#5a9e8e]" />
@@ -74,9 +114,11 @@ export default function VerifyForm({ email }: Props) {
                 Verify code
               </h1>
 
-              <p className="mt-2 text-sm text-white/50 leading-relaxed max-w-xs">
+              <p className="mt-2 max-w-xs text-sm leading-relaxed text-white/50">
                 Enter the 6-digit verification code sent to your email address
               </p>
+
+              {email && <p className="mt-2 text-xs text-[#5a9e8e]">{email}</p>}
             </div>
 
             {/* OTP */}
@@ -84,7 +126,7 @@ export default function VerifyForm({ email }: Props) {
               <OtpInput name="otp" label="Enter 6-digit code" />
             </div>
 
-            {/* Submit */}
+            {/* Actions */}
             <div className="mt-6 space-y-4">
               <SubmitButton
                 title="Verify Account"
@@ -97,9 +139,14 @@ export default function VerifyForm({ email }: Props) {
                 Didn’t receive the code?{' '}
                 <button
                   type="button"
-                  className="text-[#5a9e8e] hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleResendOTP}
-                  disabled={isResendLoading}
+                  disabled={isResendLoading || !email}
+                  className="
+                    text-[#5a9e8e]
+                    hover:underline
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                  "
                 >
                   {isResendLoading ? 'Resending...' : 'Resend'}
                 </button>
@@ -109,12 +156,11 @@ export default function VerifyForm({ email }: Props) {
               <div className="flex justify-center">
                 <button
                   type="button"
-                  onClick={() => window.history.back()}
+                  onClick={() => router.back()}
                   className="
                     flex items-center gap-2
                     text-xs text-white/40
-                    hover:text-[#5a9e8e]
-                    transition
+                    transition hover:text-[#5a9e8e]
                   "
                 >
                   <ArrowLeft size={14} />

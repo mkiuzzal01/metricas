@@ -1,16 +1,42 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
 import { Lock, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { FieldValues } from 'react-hook-form';
-
 import Container from '../shared/Container';
 import AppForm from './AppForm';
 import TextInput from './inputs/TextInput';
+import { useResetPasswordMutation } from '@/app/redux/features/auth/auth.api';
+import { toast } from 'react-toastify';
+import SubmitButton from '../shared/buttons/SubmitButton';
+import { useRouter } from 'next/navigation';
 
-export default function ResetForm() {
+interface Props {
+  email?: string;
+  t?: string;
+}
+
+export default function ResetForm({ email, t }: Props) {
+  const router = useRouter();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
   const onSubmit = async (values: FieldValues, reset: () => void) => {
     console.log(values);
-    reset();
+
+    try {
+      const res = await resetPassword({
+        email,
+        token: t,
+        ...values,
+      }).unwrap();
+
+      if (res?.message) {
+        toast.success(res.message);
+        reset();
+        router.push('/login');
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error.message);
+    }
   };
 
   return (
@@ -57,7 +83,7 @@ export default function ResetForm() {
 
               <TextInput
                 label="Confirm Password"
-                name="confirmPassword"
+                name="password_confirmation"
                 type="password"
                 placeholder="••••••••"
                 icon={<Lock size={16} />}
@@ -66,21 +92,12 @@ export default function ResetForm() {
 
             {/* Actions */}
             <div className="mt-6 space-y-4">
-              <button
-                type="submit"
-                className="
-                  w-full py-3 rounded-lg
-                  text-sm font-medium tracking-wide
-                  bg-[#5a9e8e]/10
-                  text-[#5a9e8e]
-                  border border-[#5a9e8e]/20
-                  hover:bg-[#5a9e8e]/15
-                  hover:border-[#5a9e8e]/40
-                  transition-all duration-300
-                "
-              >
-                Update Password
-              </button>
+              <SubmitButton
+                title="Update Password"
+                loadingTitle="Updating..."
+                isLoading={isLoading}
+                className="text-center"
+              />
 
               {/* Back */}
               <div className="flex justify-center">

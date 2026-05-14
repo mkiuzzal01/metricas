@@ -1,14 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { FieldValues } from 'react-hook-form';
 import { Mail, ArrowLeft } from 'lucide-react';
 import AppForm from './AppForm';
 import TextInput from './inputs/TextInput';
 import Container from '../shared/Container';
+import { useRouter } from 'next/navigation';
+import { useForgotMutation } from '@/app/redux/features/auth/auth.api';
+import { toast } from 'react-toastify';
+import SubmitButton from '../shared/buttons/SubmitButton';
+import { useParams } from 'next/navigation';
 
 export default function ForgotForm() {
+  const params = useParams();
+  const router = useRouter();
+  const [forgot, { isLoading }] = useForgotMutation();
+
   const onSubmit = async (values: FieldValues, reset: () => void) => {
-    console.log(values);
-    reset();
+    try {
+      const res = await forgot(values).unwrap();
+      if (res?.message) {
+        reset();
+        toast.success(res.message);
+        router.push(`/${params?.lan}/verify?email=${values.email}&path=forgot`);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error.message);
+    }
   };
 
   return (
@@ -42,16 +60,11 @@ export default function ForgotForm() {
 
             {/* Button */}
             <div className="mt-6 space-y-4">
-              <button
-                type="submit"
-                className="w-full py-3 rounded-lg text-sm font-medium tracking-wide
-                bg-[#5a9e8e]/10 text-[#5a9e8e]
-                border border-[#5a9e8e]/20
-                hover:bg-[#5a9e8e]/15 hover:border-[#5a9e8e]/40
-                transition-all duration-300"
-              >
-                Send reset link
-              </button>
+              <SubmitButton
+                title="Send reset link"
+                loadingTitle="Sending..."
+                isLoading={isLoading}
+              />
 
               {/* Back to login */}
               <div className="flex justify-center">
