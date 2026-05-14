@@ -1,12 +1,12 @@
-import SearchInput from '@/app/components/pages/Search';
+import Summery from '@/app/components/pages/Summery';
 import { getDictionary } from '../../dictionaries';
 
 interface Props {
   params: Promise<{ lan: 'en' | 'de' }>;
 }
 
-export default async function SearchPage({ params }: Props) {
+export default async function page({ params }: Props) {
   const { lan } = await params;
   const dic = await getDictionary(lan);
-  return <SearchInput dic={dic} lan={lan} />;
+  return <Summery dic={dic} />;
 }

@@ -1,8 +1,8 @@
 'use client';
-import { nextStep } from '@/app/redux/features/surveySlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useEffect, useState } from 'react';
 import Container from '../shared/Container';
+import { useRouter } from 'next/navigation';
 
 type Step = {
   label: string;
@@ -17,11 +17,12 @@ interface Props {
     };
   };
   addr: string;
+  lan: 'en' | 'de';
 }
 
-export default function AnalysisAnimation({ dic, addr }: Props) {
+export default function AnalysisAnimation({ dic, addr, lan }: Props) {
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const [localStep, setLocalStep] = useState(0);
 
   const steps = dic.analysis.steps;
@@ -29,7 +30,7 @@ export default function AnalysisAnimation({ dic, addr }: Props) {
   // SMOOTH ANIMATION ENGINE
   useEffect(() => {
     if (localStep >= steps.length) {
-      dispatch(nextStep());
+      router.push(`/${lan}/summary`);
       return;
     }
 

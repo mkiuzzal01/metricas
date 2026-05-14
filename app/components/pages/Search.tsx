@@ -1,38 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { setSummaryId } from '@/app/redux/features/surveySlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useMemo, useRef, useState, useEffect } from 'react';
+import Analyze from './Analyze';
 
 interface Props {
   dic: any;
+  lan: 'en' | 'de';
 }
 
-export default function SearchInput({ dic }: Props) {
+export default function SearchInput({ dic, lan }: Props) {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const [startAnalyze, setStartAnalyze] = useState(false);
 
-  // ✅ Auto focus on mount
+  // auto focus
   useEffect(() => {
     const timer = setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
 
-        // place cursor at end
         const val = inputRef.current.value;
+
         inputRef.current.setSelectionRange(val.length, val.length);
       }
-    }, 50); // small delay helps with UI rendering
+    }, 50);
 
     return () => clearTimeout(timer);
   }, []);
 
   const suggestions = useMemo(() => {
     if (!query.trim()) return [];
+
     return dic.address.filter((a: any) =>
       a.address.toLowerCase().includes(query.toLowerCase()),
     );
@@ -42,17 +46,20 @@ export default function SearchInput({ dic }: Props) {
     setQuery(item.address);
     setOpen(false);
     dispatch(setSummaryId(item.id));
+    setStartAnalyze(true);
   };
+
+  if (startAnalyze) {
+    return <Analyze dic={dic} lan={lan} />;
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-6">
-      {/* Label */}
       <h1 className="mb-6 text-[10px] font-medium uppercase tracking-[0.25em] text-teal-500">
         {dic.search.label}
       </h1>
 
-      {/* Input */}
-      <div className="relative w-[370px] lg:w-[420px] ">
+      <div className="relative w-[370px] lg:w-[420px]">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5a9e8e]">
           ⌕
         </span>
@@ -66,7 +73,6 @@ export default function SearchInput({ dic }: Props) {
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => {
-            // ✅ safer blur handling
             setTimeout(() => setOpen(false), 120);
           }}
           placeholder={dic.search.placeholder}
@@ -98,6 +104,7 @@ export default function SearchInput({ dic }: Props) {
 
               <div className="text-left">
                 <div className="text-[13px] text-white">{item.address}</div>
+
                 <div className="mt-px text-[10px] text-white/40">
                   {dic.search.suggestion || 'Select location'}
                 </div>
@@ -120,10 +127,7 @@ export default function SearchInput({ dic }: Props) {
         {dic.address.map((a: any) => (
           <button
             key={a.id}
-            onClick={() => {
-              setQuery(a.address);
-              dispatch(setSummaryId(a.id));
-            }}
+            onClick={() => handleSelect(a)}
             className="
               rounded-sm border border-white/10 px-4 py-2
               text-[8px] lg:text-[11px] font-medium uppercase tracking-[0.25em] text-[#30455a]

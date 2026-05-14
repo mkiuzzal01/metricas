@@ -1,4 +1,5 @@
-import StartSurvey from '../components/pages/StartSurvey';
+import InitialView from '../components/pages/InitialView';
+import Container from '../components/shared/Container';
 import { getDictionary } from './dictionaries';
 
 interface Props {
@@ -10,8 +11,10 @@ export default async function Page({ params }: Props) {
   const dic = await getDictionary(lan);
 
   return (
-    <div className="flex justify-center items-center">
-      <StartSurvey lan={lan} dic={dic} />
-    </div>
+    <Container>
+      <div className="flex items-center justify-center">
+        <InitialView lan={lan} dic={dic} />
+      </div>
+    </Container>
   );
 }
