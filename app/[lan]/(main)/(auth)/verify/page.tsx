@@ -1,5 +1,10 @@
 import VerifyFrom from '@/app/components/forms/VerifyFrom';
 
-export default function Verify() {
-  return <VerifyFrom />;
+interface Props {
+  searchParams: Promise<{ email?: string }>;
+}
+
+export default async function Verify({ searchParams }: Props) {
+  const { email } = await searchParams;
+  return <VerifyFrom email={email} />;
 }

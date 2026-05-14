@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { FieldValues } from 'react-hook-form';
@@ -5,11 +6,46 @@ import { FieldValues } from 'react-hook-form';
 import Container from '../shared/Container';
 import AppForm from './AppForm';
 import OtpInput from './inputs/OTPInput';
+import {
+  useResendOTPMutation,
+  useVerifyOtpMutation,
+} from '@/app/redux/features/auth/auth.api';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import SubmitButton from '../shared/buttons/SubmitButton';
 
-export default function VerifyForm() {
+interface Props {
+  email?: string;
+}
+
+export default function VerifyForm({ email }: Props) {
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const [resendOtp, { isLoading: isResendLoading }] = useResendOTPMutation();
+  const router = useRouter();
+
   const onSubmit = async (values: FieldValues, reset: () => void) => {
-    console.log(values);
+    try {
+      const res = await verifyOtp({ email, ...values }).unwrap();
+      if (res?.message) {
+        toast.success(res.message);
+        reset();
+        router.push('/login');
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
     reset();
+  };
+
+  const handleResendOTP = async () => {
+    try {
+      const res = await resendOtp({ email }).unwrap();
+      if (res?.message) {
+        toast.success(res.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -50,30 +86,22 @@ export default function VerifyForm() {
 
             {/* Submit */}
             <div className="mt-6 space-y-4">
-              <button
-                type="submit"
-                className="
-                  w-full py-3 rounded-lg
-                  text-sm font-medium tracking-wide
-                  bg-[#5a9e8e]/10
-                  text-[#5a9e8e]
-                  border border-[#5a9e8e]/20
-                  hover:bg-[#5a9e8e]/15
-                  hover:border-[#5a9e8e]/40
-                  transition-all duration-300
-                "
-              >
-                Verify Account
-              </button>
+              <SubmitButton
+                title="Verify Account"
+                loadingTitle="Verifying..."
+                isLoading={isLoading}
+              />
 
               {/* Resend */}
               <div className="text-center text-xs text-white/40">
                 Didn’t receive the code?{' '}
                 <button
                   type="button"
-                  className="text-[#5a9e8e] hover:underline"
+                  className="text-[#5a9e8e] hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleResendOTP}
+                  disabled={isResendLoading}
                 >
-                  Resend
+                  {isResendLoading ? 'Resending...' : 'Resend'}
                 </button>
               </div>
 

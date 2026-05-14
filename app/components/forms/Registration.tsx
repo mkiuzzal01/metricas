@@ -1,38 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import { FieldValues } from 'react-hook-form';
-import { User, Mail, Lock } from 'lucide-react';
-
-import AppForm from './AppForm';
-import Container from '../shared/Container';
-
-import TextInput from './inputs/TextInput';
-import SelectInput from './inputs/SelectInput';
-import DateInput from './inputs/DateInput';
-import Link from 'next/link';
 import { useRegisterMutation } from '@/app/redux/features/auth/auth.api';
+import { Lock, Mail, User } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import Container from '../shared/Container';
+import AppForm from './AppForm';
+import DateInput from './inputs/DateInput';
+import SelectInput from './inputs/SelectInput';
+import TextInput from './inputs/TextInput';
+import SubmitButton from '../shared/buttons/SubmitButton';
+import { useParams } from 'next/navigation';
 
 export default function Registration() {
   const router = useRouter();
+  const params = useParams();
   const [registerMember, { isLoading }] = useRegisterMutation();
 
   const onSubmit = async (values: FieldValues, reset: () => void) => {
     try {
       const res = await registerMember(values).unwrap();
-      if (res.success && res.data?.accessToken) {
+
+      if (res?.message) {
+        toast.success(res.message);
+
         reset();
-        router.push('/login');
+
+        router.push(
+          `/${params.lan}/verify?email=${encodeURIComponent(
+            res?.data?.user?.email,
+          )}`,
+        );
       }
     } catch (error: any) {
-      if (error?.data?.message) {
-        console.log(error.data);
-
-        toast(error.data.message);
-      } else {
-        toast('Something went wrong');
-      }
+      toast.error(error?.data?.message || 'Something went wrong');
     }
   };
 
@@ -104,17 +107,11 @@ export default function Registration() {
 
             {/* Submit */}
             <div className="mt-6">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 rounded-lg text-sm font-medium tracking-wide
-                bg-[#5a9e8e]/10 text-[#5a9e8e]
-                border border-[#5a9e8e]/20
-                hover:bg-[#5a9e8e]/15 hover:border-[#5a9e8e]/40
-                transition-all duration-300"
-              >
-                {isLoading ? 'Creating...' : 'Create Account'}
-              </button>
+              <SubmitButton
+                title="Create Account"
+                loadingTitle="Creating..."
+                isLoading={isLoading}
+              />
 
               <p className="text-center text-xs text-white/40 mt-4">
                 Already have an account?{' '}

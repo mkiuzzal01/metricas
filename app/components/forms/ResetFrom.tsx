@@ -14,11 +14,11 @@ export default function ResetForm() {
   };
 
   return (
-    <Container className="flex items-center justify-center min-h-[calc(100vh-100px)] w-full relative metricas-bg">
+    <Container className="flex items-center justify-center min-h-[calc(100vh-100px)] w-full relative">
       <AppForm onSubmit={onSubmit}>
         <div className="w-full max-w-md relative z-10">
           {/* Glow Background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl rounded-2xl" />
+          <div className="absolute inset-0 bg-linear-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl rounded-2xl" />
 
           {/* Card */}
           <div className="relative rounded-2xl border border-white/10 bg-[#0b111a]/70 backdrop-blur-xl p-8 shadow-2xl fade-up">

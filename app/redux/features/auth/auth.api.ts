@@ -34,6 +34,22 @@ export const authApi = baseApi.injectEndpoints({
       },
     }),
 
+    verifyOtp: builder.mutation({
+      query: (data) => ({
+        url: '/verify-otp',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    resendOTP: builder.mutation({
+      query: (data) => ({
+        url: '/resend-otp',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
     getCurrentUser: builder.query({
       query: () => ({
         url: '/auth/me',
@@ -63,4 +79,6 @@ export const {
   useRegisterMutation,
   useGetCurrentUserQuery,
   useLogoutMutation,
+  useVerifyOtpMutation,
+  useResendOTPMutation,
 } = authApi;

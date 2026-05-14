@@ -48,7 +48,7 @@ export default function Navbar({ navLinks, dic }: Props) {
           </div>
 
           <Link
-            href="/demo"
+            href="/"
             className="ml-2 rounded-lg bg-[#5a9e8e] px-5 py-2.5 text-sm font-semibold text-[#0a0e14] transition-all duration-200 hover:opacity-90"
           >
             {dic?.requestDemo}
@@ -88,7 +88,7 @@ export default function Navbar({ navLinks, dic }: Props) {
           ))}
 
           <Link
-            href="/demo"
+            href="/"
             onClick={() => setShowMenu(false)}
             className="mt-3 rounded-lg bg-[#5a9e8e] px-4 py-3 text-center text-sm font-semibold text-[#0a0e14]"
           >
