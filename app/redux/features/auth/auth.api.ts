@@ -3,6 +3,14 @@ import { logout, setUser } from './authSlice';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (data) => ({
+        url: '/register',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
     login: builder.mutation({
       query: (data) => ({
         url: '/auth/login',
@@ -50,5 +58,9 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useGetCurrentUserQuery, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetCurrentUserQuery,
+  useLogoutMutation,
+} = authApi;

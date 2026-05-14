@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { FieldValues } from 'react-hook-form';
 import { User, Mail, Lock } from 'lucide-react';
@@ -9,11 +10,30 @@ import TextInput from './inputs/TextInput';
 import SelectInput from './inputs/SelectInput';
 import DateInput from './inputs/DateInput';
 import Link from 'next/link';
+import { useRegisterMutation } from '@/app/redux/features/auth/auth.api';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function Registration() {
+  const router = useRouter();
+  const [registerMember, { isLoading }] = useRegisterMutation();
+
   const onSubmit = async (values: FieldValues, reset: () => void) => {
-    console.log(values);
-    reset();
+    try {
+      const res = await registerMember(values).unwrap();
+      if (res.success && res.data?.accessToken) {
+        reset();
+        router.push('/login');
+      }
+    } catch (error: any) {
+      if (error?.data?.message) {
+        console.log(error.data);
+
+        toast(error.data.message);
+      } else {
+        toast('Something went wrong');
+      }
+    }
   };
 
   return (
@@ -86,13 +106,14 @@ export default function Registration() {
             <div className="mt-6">
               <button
                 type="submit"
+                disabled={isLoading}
                 className="w-full py-3 rounded-lg text-sm font-medium tracking-wide
                 bg-[#5a9e8e]/10 text-[#5a9e8e]
                 border border-[#5a9e8e]/20
                 hover:bg-[#5a9e8e]/15 hover:border-[#5a9e8e]/40
                 transition-all duration-300"
               >
-                Create Account
+                {isLoading ? 'Creating...' : 'Create Account'}
               </button>
 
               <p className="text-center text-xs text-white/40 mt-4">

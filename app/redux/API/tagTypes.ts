@@ -1,1 +1,1 @@
-export const tagTypes = ['auth', 'member'];
+export const tagTypes = ['auth'];
