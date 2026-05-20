@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-import { useRouter } from 'next/navigation';
+"use client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  lan: 'en' | 'de';
+  lan: "en" | "de";
   dic: any;
 }
 
@@ -48,12 +49,11 @@ export default function InitialView({ lan, dic }: Props) {
           {dic.initial.startBtn}
         </button>
 
-        <button
-          onClick={handleStart}
-          className="text-[11px] font-medium tracking-[0.25em] uppercase px-9 py-4 bg-transparent text-[#30455a] border border-white/10 rounded-sm transition-all hover:border-[#5a9e8e]/40 hover:text-[#5a9e8e]"
-        >
-          {dic.initial.demoBtn}
-        </button>
+        <Link href={"/demo"}>
+          <button className="text-[11px] font-medium tracking-[0.25em] uppercase px-9 py-4 bg-transparent text-[#30455a] border border-white/10 rounded-sm transition-all hover:border-[#5a9e8e]/40 hover:text-[#5a9e8e]">
+            {dic.initial.demoBtn}
+          </button>
+        </Link>
       </div>
     </div>
   );
