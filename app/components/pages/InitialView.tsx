@@ -49,7 +49,7 @@ export default function InitialView({ lan, dic }: Props) {
           {dic.initial.startBtn}
         </button>
 
-        <Link href={"/demo"}>
+        <Link href={`/${lan}/demo`}>
           <button className="text-[11px] font-medium tracking-[0.25em] uppercase px-9 py-4 bg-transparent text-[#30455a] border border-white/10 rounded-sm transition-all hover:border-[#5a9e8e]/40 hover:text-[#5a9e8e]">
             {dic.initial.demoBtn}
           </button>

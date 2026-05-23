@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { useAppSelector } from '@/app/redux/hooks';
-import { eur, safe } from '../lib/currency';
-import SectionHeader from '../shared/SectionHeader';
-import KPICard from '../shared/KPICard';
-import SubScoreBar from '../shared/SubScoreBar';
-import Empty from '../shared/Empty';
-import RefreshAction from '../util/RefreshAction';
-import ScrollToTop from '../shared/buttons/ScrollToTop';
+import { useAppSelector } from "@/app/redux/hooks";
+import { eur, safe } from "../lib/currency";
+import SectionHeader from "../shared/SectionHeader";
+import KPICard from "../shared/KPICard";
+import SubScoreBar from "../shared/SubScoreBar";
+import Empty from "../shared/Empty";
+import ScrollToTop from "../shared/buttons/ScrollToTop";
+import Link from "next/link";
 
 interface Props {
   dic: any;
@@ -31,12 +31,12 @@ export default function Summery({ dic }: Props) {
           className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-64"
           style={{
             background:
-              'linear-gradient(90deg, transparent, rgba(90,158,142,0.7), transparent)',
+              "linear-gradient(90deg, transparent, rgba(90,158,142,0.7), transparent)",
           }}
         />
 
         <div className="text-[11px] tracking-[0.22em] text-[#9fb0c0] font-mono uppercase mb-2">
-          {data.city || 'Unknown Address'}
+          {data.city || "Unknown Address"}
         </div>
 
         <div className="inline-block text-[9px] uppercase tracking-[0.3em] text-[rgba(90,158,142,0.9)] bg-[rgba(90,158,142,0.08)] border border-[rgba(90,158,142,0.2)] px-2.5 py-1 rounded-sm mb-4">
@@ -51,7 +51,7 @@ export default function Summery({ dic }: Props) {
         </div>
 
         <div className="font-mono text-[11px] tracking-[0.1em] text-[#3a4a5c] mt-2">
-          {data.spanneLabel}: € {eur(data.spanne?.[0])} — €{' '}
+          {data.spanneLabel}: € {eur(data.spanne?.[0])} — €{" "}
           {eur(data.spanne?.[1])}
         </div>
 
@@ -67,22 +67,22 @@ export default function Summery({ dic }: Props) {
         <KPICard
           label="Preis / m²"
           value={
-            data.qm_preis ? `€ ${data.qm_preis.toLocaleString('de-DE')}` : '-'
+            data.qm_preis ? `€ ${data.qm_preis.toLocaleString("de-DE")}` : "-"
           }
         />
         <KPICard
           label="Trend 1J"
-          value={data.trend_1j != null ? `+${data.trend_1j}%` : '-'}
+          value={data.trend_1j != null ? `+${data.trend_1j}%` : "-"}
           accent
         />
         <KPICard
           label="Trend 5J"
-          value={data.trend_5j != null ? `+${data.trend_5j}%` : '-'}
+          value={data.trend_5j != null ? `+${data.trend_5j}%` : "-"}
           accent
         />
         <KPICard
           label="Prognose 1J"
-          value={data.prognose_1j != null ? `+${data.prognose_1j}%` : '-'}
+          value={data.prognose_1j != null ? `+${data.prognose_1j}%` : "-"}
           accent
         />
       </div>
@@ -96,7 +96,7 @@ export default function Summery({ dic }: Props) {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse at center bottom, rgba(90,158,142,0.08) 0%, transparent 70%)',
+                "radial-gradient(ellipse at center bottom, rgba(90,158,142,0.08) 0%, transparent 70%)",
             }}
           />
           <div className="text-[11px] uppercase tracking-[0.2em] text-[#7f8ea3] mb-2">
@@ -115,19 +115,19 @@ export default function Summery({ dic }: Props) {
           {data.lage_sub && (
             <>
               <SubScoreBar
-                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[1]}`}
+                label={`${label[1]?.split(" ")[0]} ${label[1]?.split(" ")[1]}`}
                 value={data.lage_sub.mikrolage}
               />
               <SubScoreBar
-                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[2]}`}
+                label={`${label[1]?.split(" ")[0]} ${label[1]?.split(" ")[2]}`}
                 value={data.lage_sub.makrolage}
               />
               <SubScoreBar
-                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[3]}`}
+                label={`${label[1]?.split(" ")[0]} ${label[1]?.split(" ")[3]}`}
                 value={data.lage_sub.infrastruktur}
               />
               <SubScoreBar
-                label={`${label[1]?.split(' ')[0]} ${label[1]?.split(' ')[4]}`}
+                label={`${label[1]?.split(" ")[0]} ${label[1]?.split(" ")[4]}`}
                 value={data.lage_sub.sozial}
               />
             </>
@@ -140,20 +140,20 @@ export default function Summery({ dic }: Props) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <KPICard
           label="Kaltmiete /m²"
-          value={data.miete_kalt ? `€ ${data.miete_kalt}` : '-'}
+          value={data.miete_kalt ? `€ ${data.miete_kalt}` : "-"}
         />
         <KPICard
           label="Bruttorendite"
-          value={data.rendite_brutto ? `${data.rendite_brutto}%` : '-'}
+          value={data.rendite_brutto ? `${data.rendite_brutto}%` : "-"}
           accent
         />
         <KPICard
           label="Mietmultiplikator"
-          value={data.mietmultiplikator ? `${data.mietmultiplikator}×` : '-'}
+          value={data.mietmultiplikator ? `${data.mietmultiplikator}×` : "-"}
         />
         <KPICard
           label="Vermarktung"
-          value={data.vermarktung_tage ? `${data.vermarktung_tage} Tage` : '-'}
+          value={data.vermarktung_tage ? `${data.vermarktung_tage} Tage` : "-"}
         />
       </div>
 
@@ -163,7 +163,7 @@ export default function Summery({ dic }: Props) {
         <KPICard label="Zimmer" value={safe(data.zimmer)} />
         <KPICard
           label="Wohnfläche"
-          value={data.wohnflaeche ? `${data.wohnflaeche} m²` : '-'}
+          value={data.wohnflaeche ? `${data.wohnflaeche} m²` : "-"}
         />
         <KPICard label="Etage" value={safe(data.etage)} />
         <KPICard label="Baujahr" value={safe(data.baujahr)} />
@@ -180,10 +180,10 @@ export default function Summery({ dic }: Props) {
             >
               <div>
                 <div className="text-[#dce4ec] text-[13px]">
-                  {c.addr || '-'}
+                  {c.addr || "-"}
                 </div>
                 <div className="font-mono text-[9px] text-[#7f8ea3] mt-0.5">
-                  {c.qm || '-'} m² · {c.dist || '-'} · Bj. {c.bj || '-'}
+                  {c.qm || "-"} m² · {c.dist || "-"} · Bj. {c.bj || "-"}
                 </div>
               </div>
               <div className="text-right">
@@ -191,10 +191,10 @@ export default function Summery({ dic }: Props) {
                   className="text-[rgba(90,158,142,0.95)] text-[16px]"
                   style={{ fontFamily: "'DM Serif Display', serif" }}
                 >
-                  € {c.preis ? c.preis.toLocaleString('de-DE') : '-'}
+                  € {c.preis ? c.preis.toLocaleString("de-DE") : "-"}
                 </div>
                 <div className="font-mono text-[9px] text-[#7f8ea3] mt-0.5">
-                  € {c.qm_p ? c.qm_p.toLocaleString('de-DE') : '-'} /m²
+                  € {c.qm_p ? c.qm_p.toLocaleString("de-DE") : "-"} /m²
                 </div>
               </div>
             </div>
@@ -217,10 +217,10 @@ export default function Summery({ dic }: Props) {
             >
               <span className="text-[15px] shrink-0">{item.icon}</span>
               <span className="flex-1 text-[12px] text-[#7f8ea3]">
-                {item.de || item.en || '-'}
+                {item.de || item.en || "-"}
               </span>
               <span className="font-mono text-[12px] text-[rgba(90,158,142,0.9)] font-medium shrink-0">
-                {item.val || '-'}
+                {item.val || "-"}
               </span>
             </div>
           ))
@@ -250,8 +250,8 @@ export default function Summery({ dic }: Props) {
               label="Einwohner/km²"
               value={
                 data.sozio.einwohner_qkm
-                  ? data.sozio.einwohner_qkm.toLocaleString('de-DE')
-                  : '-'
+                  ? data.sozio.einwohner_qkm.toLocaleString("de-DE")
+                  : "-"
               }
             />
             <KPICard
@@ -259,7 +259,7 @@ export default function Summery({ dic }: Props) {
               value={
                 data.sozio.arbeitslosenquote
                   ? `${data.sozio.arbeitslosenquote}%`
-                  : '-'
+                  : "-"
               }
               accent
             />
@@ -268,15 +268,15 @@ export default function Summery({ dic }: Props) {
               value={
                 data.sozio.akademiker_anteil
                   ? `${data.sozio.akademiker_anteil}%`
-                  : '-'
+                  : "-"
               }
             />
             <KPICard
               label="Bodenrichtwert"
               value={
                 data.bodenrichtwert
-                  ? `€ ${data.bodenrichtwert.toLocaleString('de-DE')}/m²`
-                  : '-'
+                  ? `€ ${data.bodenrichtwert.toLocaleString("de-DE")}/m²`
+                  : "-"
               }
               large
             />
@@ -285,15 +285,15 @@ export default function Summery({ dic }: Props) {
       )}
 
       {/* ═════ ACTIONS ═════ */}
-      <div className="grid grid-cols-2 gap-2 mt-9">
+      <div className="grid text-center grid-cols-2 gap-2 mt-9">
         <button className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-[rgba(90,158,142,0.9)] text-[#080d12] hover:bg-[rgba(90,158,142,1)] transition-colors cursor-pointer">
           {actionButtons[0]}
         </button>
-        <RefreshAction>
+        <Link href="/search">
           <div className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-transparent border border-white/10 text-[#7f8ea3] hover:border-[rgba(90,158,142,0.5)] hover:text-[rgba(90,158,142,0.9)] transition-colors cursor-pointer">
             {actionButtons[1]}
           </div>
-        </RefreshAction>
+        </Link>
       </div>
       <ScrollToTop />
     </div>
