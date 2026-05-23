@@ -1,5 +1,5 @@
-import { getDictionary } from '@/app/[lan]/dictionaries';
-import { JSX } from 'react';
+import { getDictionary } from "@/app/[lan]/dictionaries";
+import { JSX } from "react";
 
 export interface NavigationLink {
   label: string;
@@ -8,7 +8,7 @@ export interface NavigationLink {
 }
 
 export const getNavigationLinks = async (
-  lan: 'en' | 'de',
+  lan: "en" | "de",
 ): Promise<NavigationLink[]> => {
   const dict = await getDictionary(lan);
 
@@ -19,13 +19,13 @@ export const getNavigationLinks = async (
     },
     {
       label: dict.nav.pricing,
-      href: `/${lan}/pricing`,
+      href: `/${lan}/pricing-plan`,
     },
   ];
 };
 
 export const getFooterLinks = async (
-  lan: 'en' | 'de',
+  lan: "en" | "de",
 ): Promise<NavigationLink[]> => {
   const dict = await getDictionary(lan);
 

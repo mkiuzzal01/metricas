@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import PricingCard from '@/app/[lan]/(main)/pricing/__components/PricingCard';
-import Container from '../shared/Container';
+import PricingCard from "@/app/[lan]/(main)/pricing-plan/__components/PricingCard";
+import Container from "../shared/Container";
 
 export type TPlan = {
   id: number;
