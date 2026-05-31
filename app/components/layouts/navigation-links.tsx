@@ -1,4 +1,5 @@
 import { getDictionary } from "@/app/[lan]/dictionaries";
+import { cookies } from "next/headers";
 import { JSX } from "react";
 
 export interface NavigationLink {
@@ -11,11 +12,12 @@ export const getNavigationLinks = async (
   lan: "en" | "de",
 ): Promise<NavigationLink[]> => {
   const dict = await getDictionary(lan);
+  const token = (await cookies()).get("metricas_token");
 
   return [
     {
-      label: dict.nav.dashboard,
-      href: `/${lan}/dashboard`,
+      label: token ? dict.nav.dashboard : dict.nav.login,
+      href: token ? `/${lan}/profile` : `/${lan}/login`,
     },
     {
       label: dict.nav.pricing,

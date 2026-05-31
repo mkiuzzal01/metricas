@@ -1,23 +1,26 @@
-'use client';
-import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import LanToggle from '../shared/buttons/LanToggle';
-import { NavigationLink } from './navigation-links';
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import LanToggle from "../shared/buttons/LanToggle";
+import { NavigationLink } from "./navigation-links";
+import { useAppSelector } from "@/app/redux/hooks";
 
 interface Props {
+  lan: "en" | "de";
   navLinks: NavigationLink[];
   dic: { requestDemo: string };
 }
 
-export default function Navbar({ navLinks, dic }: Props) {
+export default function Navbar({ lan, navLinks, dic }: Props) {
   const [showMenu, setShowMenu] = useState(false);
+  const { token } = useAppSelector((state) => state.auth);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0a0e14]/80 backdrop-blur-xl">
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6">
         {/* Logo */}
-        <Link href={'/'}>
+        <Link href={"/"}>
           <div className="flex cursor-pointer items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-linear-to-tr from-[#111927] to-[#0a0e14] text-sm font-bold text-[#5a9e8e]">
               M
@@ -46,7 +49,7 @@ export default function Navbar({ navLinks, dic }: Props) {
           </div>
 
           <Link
-            href="/"
+            href={`/${lan}/demo`}
             className="ml-2 rounded-lg bg-[#5a9e8e] px-5 py-2.5 text-sm font-semibold text-[#0a0e14] transition-all duration-200 hover:opacity-90"
           >
             {dic?.requestDemo}
@@ -70,7 +73,7 @@ export default function Navbar({ navLinks, dic }: Props) {
       {/* Mobile Menu */}
       <div
         className={`overflow-hidden border-t border-white/10 bg-[#0a0e14] transition-all duration-300 lg:hidden ${
-          showMenu ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          showMenu ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="flex flex-col gap-1 px-4 py-4">
@@ -86,7 +89,7 @@ export default function Navbar({ navLinks, dic }: Props) {
           ))}
 
           <Link
-            href="/"
+            href={`/${lan}/demo`}
             onClick={() => setShowMenu(false)}
             className="mt-3 rounded-lg bg-[#5a9e8e] px-4 py-3 text-center text-sm font-semibold text-[#0a0e14]"
           >

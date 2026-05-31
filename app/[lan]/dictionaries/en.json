@@ -1,7 +1,8 @@
 {
   "nav": {
     "dashboard": "Dashboard",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "login": "Login"
   },
   "footer": {
     "sprengnetterAVM": "Sprengnetter AVM",
