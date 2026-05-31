@@ -60,7 +60,7 @@ export default function Login() {
       <AppForm onSubmit={onSubmit}>
         <div className="w-full max-w-md relative z-10">
           {/* Glow */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl rounded-2xl" />
+          <div className="absolute inset-0 bg-linear-to-b from-[#0f1722]/80 to-[#0a0e14]/90 blur-xl rounded-2xl" />
 
           {/* Card */}
           <div className="relative rounded-2xl border border-white/10 bg-[#0b111a]/70 backdrop-blur-xl p-8 shadow-2xl fade-up">

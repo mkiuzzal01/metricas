@@ -1,7 +1,7 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL! as string;
 
 export type FetchOptions = {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  method?: "GET" | "POST" | "PATCH" | "DELETE";
   body?: unknown;
   headers?: HeadersInit;
   cache?: RequestCache;
@@ -14,28 +14,28 @@ export async function apiFetch<T>(
   options: FetchOptions = {},
 ): Promise<T> {
   const {
-    method = 'GET',
+    method = "GET",
     body,
     headers,
-    cache = 'force-cache',
+    cache = "force-cache",
     revalidate,
     tags,
   } = options;
 
-  const isMutation = method !== 'GET';
+  const isMutation = method !== "GET";
 
   const res = await fetch(`${API_BASE_URL}${url}`, {
     method,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
 
-    cache: isMutation ? 'no-store' : cache,
+    cache: isMutation ? "no-store" : cache,
 
     next:
-      !isMutation && (typeof revalidate === 'number' || tags)
+      !isMutation && (typeof revalidate === "number" || tags)
         ? { revalidate, tags }
         : undefined,
   });

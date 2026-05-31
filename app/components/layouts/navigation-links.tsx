@@ -1,11 +1,11 @@
 import { getDictionary } from "@/app/[lan]/dictionaries";
 import { cookies } from "next/headers";
-import { JSX } from "react";
+import { JSXElementConstructor } from "react";
 
 export interface NavigationLink {
   label: string;
   href: string;
-  icon?: JSX.Element;
+  icon?: JSXElementConstructor<any>;
 }
 
 export const getNavigationLinks = async (
@@ -54,3 +54,18 @@ export const getFooterLinks = async (
     },
   ];
 };
+
+export const aside: NavigationLink[] = [
+  {
+    label: "Profile",
+    href: "/profile",
+  },
+  {
+    label: "Subscriptions",
+    href: "/my-subscription",
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+  },
+];

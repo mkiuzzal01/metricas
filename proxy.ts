@@ -34,7 +34,11 @@ export function proxy(request: NextRequest) {
   // =====================
   // 2. AUTH CHECK (NOW ACCURATE)
   // =====================
-  const isProtected = cleanPath.startsWith("/search");
+  const isProtected =
+    cleanPath.startsWith("/search") ||
+    cleanPath.startsWith("/profile") ||
+    cleanPath.startsWith("/settings") ||
+    cleanPath.startsWith("/my-subscription");
 
   if (isProtected && !token) {
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));

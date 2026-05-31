@@ -4,17 +4,16 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import LanToggle from "../shared/buttons/LanToggle";
 import { NavigationLink } from "./navigation-links";
-import { useAppSelector } from "@/app/redux/hooks";
 
 interface Props {
   lan: "en" | "de";
+  asideLinks: NavigationLink[];
   navLinks: NavigationLink[];
   dic: { requestDemo: string };
 }
 
-export default function Navbar({ lan, navLinks, dic }: Props) {
+export default function Navbar({ lan, navLinks, asideLinks, dic }: Props) {
   const [showMenu, setShowMenu] = useState(false);
-  const { token } = useAppSelector((state) => state.auth);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0a0e14]/80 backdrop-blur-xl">
@@ -77,12 +76,25 @@ export default function Navbar({ lan, navLinks, dic }: Props) {
         }`}
       >
         <div className="flex flex-col gap-1 px-4 py-4">
-          {navLinks?.map((link) => (
+          {navLinks
+            ?.filter((link) => !link.label.includes("Dashboard"))
+            ?.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setShowMenu(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/5 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+          {asideLinks?.map((link) => (
             <Link
               key={link?.href}
-              href={link?.href}
               onClick={() => setShowMenu(false)}
-              className="rounded-md px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/5 hover:text-white"
+              href={`/${lan}/${link?.href}`}
+              className="rounded-md px-4 py-2 text-sm font-medium text-white/60 transition-all duration-200 hover:bg-white/5 hover:text-white"
             >
               {link?.label}
             </Link>
