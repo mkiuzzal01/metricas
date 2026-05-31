@@ -2,10 +2,15 @@ import { getPricing } from "@/actions/quires/pricing.api";
 import ErrorMessage from "@/app/components/message/ErrorMessage";
 import Pricing from "@/app/components/pages/Pricing";
 
-export default async function page() {
-  const pricing = await getPricing();
+interface Props {
+  params: Promise<{
+    lan: string;
+  }>;
+}
 
-  console.log("Fetched pricing data:", pricing); // Debug log
+export default async function page({ params }: Props) {
+  const pricing = await getPricing();
+  const { lan } = await params;
 
   if (!pricing) {
     return (
@@ -13,5 +18,5 @@ export default async function page() {
     );
   }
 
-  return <Pricing payload={pricing} />;
+  return <Pricing payload={pricing} lan={lan} />;
 }

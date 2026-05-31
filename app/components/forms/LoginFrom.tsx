@@ -1,46 +1,57 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-import { useLoginMutation } from '@/app/redux/features/auth/auth.api';
-import { setUser } from '@/app/redux/features/auth/authSlice';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { Lock, Mail } from 'lucide-react';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import { FieldValues } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import SubmitButton from '../shared/buttons/SubmitButton';
-import Container from '../shared/Container';
-import AppForm from './AppForm';
-import TextInput from './inputs/TextInput';
+"use client";
+import { useLoginMutation } from "@/app/redux/features/auth/auth.api";
+import { setUser } from "@/app/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { Lock, Mail } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { FieldValues } from "react-hook-form";
+import { toast } from "react-toastify";
+import SubmitButton from "../shared/buttons/SubmitButton";
+import Container from "../shared/Container";
+import AppForm from "./AppForm";
+import TextInput from "./inputs/TextInput";
+import { useSearchParams } from "next/navigation";
 
 export default function Login() {
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
-  const locale = (params.lan as string) || 'en';
+  const locale = (params.lan as string) || "en";
   const [login, { isLoading }] = useLoginMutation();
+
+  const redirectPath = redirectUrl || `/${locale}`;
 
   const onSubmit = async (values: FieldValues, reset: () => void) => {
     try {
       const res = await login(values).unwrap();
 
       if (res?.data?.token) {
-        toast.success(res.message || 'Login successful');
+        toast.success(res.message || "Login successful");
         dispatch(
           setUser({
-            user: res.data.user,
+            user: {
+              id: res.data.user.id,
+              email: res.data.user.email,
+              role: res.data.user.role,
+              name: res.data.user.name,
+              avatar: res.data.user.avatar,
+            },
             token: res.data.token,
             tokenType: res.data.token_type,
             expiresAt: res.data.expires_at,
           }),
         );
 
-        document.cookie = `auth-token=${res.data.token}; path=/; max-age=86400`;
+        document.cookie = `metricas_token=${res.data.token}; path=/; max-age=86400`;
         reset();
-        router.push(`/${locale}`);
+        router.push(redirectPath);
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || 'Login failed');
+      toast.error(error?.data?.message || "Login failed");
     }
   };
 
@@ -94,7 +105,7 @@ export default function Login() {
               <SubmitButton isLoading={isLoading} title="Sign In" />
 
               <div className="text-center text-xs text-white/40">
-                Don’t have an account?{' '}
+                Don’t have an account?{" "}
                 <Link
                   href={`/${locale}/registration`}
                   className="text-[#5a9e8e] hover:underline"

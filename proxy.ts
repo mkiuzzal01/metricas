@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const locales = ["en", "de"];
 const LOCALE_COOKIE = "NEXT_LOCALE";
-const AUTH_COOKIE = "auth-token";
+const AUTH_COOKIE = "metricas_token";
 
 function getLocale(request: NextRequest): string {
   const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value;

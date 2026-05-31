@@ -7,19 +7,20 @@ import {
   type BaseQueryApi,
   type BaseQueryFn,
   type FetchArgs,
-} from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
-import { logout, setUser } from '../features/auth/authSlice';
-import { tagTypes } from './tagTypes';
+} from "@reduxjs/toolkit/query/react";
+import { RootState } from "../store";
+import { logout, setUser } from "../features/auth/authSlice";
+import { tagTypes } from "./tagTypes";
 
 // Base query with authorization header from Redux store
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL,
-  credentials: 'include',
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth?.token;
+
     if (token) {
-      headers.set('authorization', token);
+      headers.set("Authorization", `Bearer ${token}`);
     }
     return headers;
   },
@@ -37,8 +38,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       const refreshResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh-token`,
         {
-          method: 'POST',
-          credentials: 'include',
+          method: "POST",
+          credentials: "include",
         },
       );
 
@@ -53,13 +54,15 @@ const baseQueryWithRefreshToken: BaseQueryFn<
           api.dispatch(
             setUser({
               user: {
-                id: currentUser?.userId || '',
-                email: currentUser?.email || '',
-                role: currentUser?.role || '',
-                name: currentUser?.name || '',
-                avatar: currentUser?.avatar || '',
+                id: currentUser?.id || 0,
+                email: currentUser?.email || "",
+                role: currentUser?.role || "",
+                name: currentUser?.name || "",
+                avatar: currentUser?.avatar || null,
               },
               token: refreshData.data.accessToken,
+              tokenType: refreshData.data.tokenType || "Bearer",
+              expiresAt: refreshData.data.expiresAt,
             }),
           );
         }
@@ -79,7 +82,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 };
 
 export const baseApi = createApi({
-  reducerPath: 'baseApi',
+  reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
   tagTypes: tagTypes,
   endpoints: () => ({}),

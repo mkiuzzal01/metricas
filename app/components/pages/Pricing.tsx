@@ -18,6 +18,7 @@ export type TPlan = {
 };
 
 interface IPricing {
+  lan: string;
   payload: {
     data: {
       one_time_plans: TPlan[];
@@ -25,7 +26,7 @@ interface IPricing {
     };
   };
 }
-export default function Pricing({ payload }: IPricing) {
+export default function Pricing({ payload, lan }: IPricing) {
   const data = payload?.data?.subscription_plans;
   return (
     <Container>
@@ -40,7 +41,7 @@ export default function Pricing({ payload }: IPricing) {
 
         {/* Plans Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
-          <PricingCard plan={data} />
+          <PricingCard plan={data} lan={lan} />
         </div>
       </div>
     </Container>

@@ -1,19 +1,36 @@
-import { TPlan } from '@/app/components/pages/Pricing';
-import { useTakeSubscriptionPlanMutation } from '@/app/redux/features/pricing/pricing.api';
+import { TPlan } from "@/app/components/pages/Pricing";
+import { useTakeSubscriptionPlanMutation } from "@/app/redux/features/pricing/pricing.api";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface Props {
+  lan: string;
   plan: TPlan[];
 }
 
-export default function PricingCard({ plan }: Props) {
+export default function PricingCard({ plan, lan }: Props) {
+  const router = useRouter();
   const [takeSubscriptionPlan, { isLoading }] =
     useTakeSubscriptionPlanMutation();
 
   const handleTakeSubscription = async (plan_id: number) => {
-    const res = await takeSubscriptionPlan({
-      plan_id,
-    });
-    console.log(res);
+    try {
+      const res: any = await takeSubscriptionPlan({
+        plan_id,
+      }).unwrap();
+
+      toast.success(res?.message || "Subscription successful");
+
+      // Redirect to payment page
+      if (res?.data?.payment_url) {
+        router.push(res.data.payment_url);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
+      if (error?.status === 401) {
+        router.push(`/${lan}/login?redirect=/${lan}/pricing-plan`);
+      }
+    }
   };
 
   return (
@@ -25,8 +42,8 @@ export default function PricingCard({ plan }: Props) {
               relative rounded-2xl border p-6 backdrop-blur-xl transition
               ${
                 plan.is_highlighted
-                  ? 'border-[#5a9e8e] bg-[#0b111a]/80 shadow-xl scale-[1.03]'
-                  : 'border-white/10 bg-[#0b111a]/60 hover:border-white/20'
+                  ? "border-[#5a9e8e] bg-[#0b111a]/80 shadow-xl scale-[1.03]"
+                  : "border-white/10 bg-[#0b111a]/60 hover:border-white/20"
               }
             `}
         >
@@ -74,12 +91,12 @@ export default function PricingCard({ plan }: Props) {
                 mt-8 w-full py-3 rounded-lg text-sm font-medium transition
                 ${
                   plan.is_highlighted
-                    ? 'bg-[#5a9e8e] text-black hover:bg-[#4e8e80]'
-                    : 'bg-white/5 border border-white/10 hover:bg-white/10'
+                    ? "bg-[#5a9e8e] text-black hover:bg-[#4e8e80]"
+                    : "bg-white/5 border border-white/10 hover:bg-white/10"
                 }
               `}
           >
-            {isLoading ? 'Subscribing...' : 'Get Started'}
+            {isLoading ? "Subscribing..." : "Get Started"}
           </button>
         </div>
       ))}
