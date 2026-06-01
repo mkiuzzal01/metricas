@@ -49,6 +49,7 @@ export default function Login() {
         document.cookie = `metricas_token=${res.data.token}; path=/; max-age=86400`;
         reset();
         router.push(redirectPath);
+        router.refresh();
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Login failed");

@@ -4,11 +4,14 @@ export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex w-full justify-between gap-10">
-      <aside className="hidden min-w-1/5 md:block">
+    <div className="flex min-h-screen w-full">
+      {/* Sidebar */}
+      <aside className="hidden w-64 shrink-0  md:block">
         <SaideBar />
       </aside>
-      <main className="flex-1">{children}</main>
+
+      {/* Main content */}
+      <main className="flex-1 p-6">{children}</main>
     </div>
   );
 }
