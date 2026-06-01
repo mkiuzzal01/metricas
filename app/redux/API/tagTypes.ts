@@ -1,1 +1,6 @@
-export const tagTypes = ["auth", "profile-info", "my-subscription"];
+export const tagTypes = [
+  "auth",
+  "profile-info",
+  "my-subscription",
+  "searchAddress",
+];
