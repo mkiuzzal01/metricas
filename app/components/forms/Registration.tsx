@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-import { useRegisterMutation } from '@/app/redux/features/auth/auth.api';
-import { Lock, Mail, User } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { FieldValues } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import Container from '../shared/Container';
-import AppForm from './AppForm';
-import DateInput from './inputs/DateInput';
-import SelectInput from './inputs/SelectInput';
-import TextInput from './inputs/TextInput';
-import SubmitButton from '../shared/buttons/SubmitButton';
-import { useParams } from 'next/navigation';
+"use client";
+import { useRegisterMutation } from "@/app/redux/features/auth/auth.api";
+import { Lock, Mail, User } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FieldValues } from "react-hook-form";
+import { toast } from "react-toastify";
+import Container from "../shared/Container";
+import AppForm from "./AppForm";
+import SelectInput from "./inputs/SelectInput";
+import TextInput from "./inputs/TextInput";
+import SubmitButton from "../shared/buttons/SubmitButton";
+import { useParams } from "next/navigation";
+import { DateInput } from "./inputs/DateInput";
 
 export default function Registration() {
   const params = useParams();
@@ -32,7 +32,7 @@ export default function Registration() {
         );
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || 'Something went wrong');
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
@@ -64,9 +64,9 @@ export default function Registration() {
                   label="Gender"
                   placeholder="Select gender"
                   options={[
-                    { label: 'Male', value: 'male' },
-                    { label: 'Female', value: 'female' },
-                    { label: 'Other', value: 'other' },
+                    { label: "Male", value: "male" },
+                    { label: "Female", value: "female" },
+                    { label: "Other", value: "other" },
                   ]}
                 />
                 {/* Date of Birth */}
@@ -111,7 +111,7 @@ export default function Registration() {
               />
 
               <p className="text-center text-xs text-white/40 mt-4">
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <Link
                   href="/login"
                   className="text-[#5a9e8e] hover:underline cursor-pointer"

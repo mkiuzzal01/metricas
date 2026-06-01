@@ -41,7 +41,9 @@ export function proxy(request: NextRequest) {
     cleanPath.startsWith("/my-subscription");
 
   if (isProtected && !token) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    return NextResponse.redirect(
+      new URL(`/${locale}/login?redirect=${pathname}`, request.url),
+    );
   }
 
   // =====================

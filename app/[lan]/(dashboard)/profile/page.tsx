@@ -17,11 +17,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { useGetProfileInfoQuery } from "@/app/redux/features/profile/profile.api";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { data, isLoading } = useGetProfileInfoQuery(undefined);
 
   const profile = data?.data;
+
+  console.log(profile);
 
   if (isLoading) {
     return (
@@ -44,10 +47,12 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <Button className="bg-[#5a9e8e] text-black hover:bg-[#4f8d7e] rounded-xl">
-          <Pencil size={14} className="mr-2" />
-          Edit Profile
-        </Button>
+        <Link href={"/update-profile"}>
+          <Button className="bg-[#5a9e8e] text-black hover:bg-[#4f8d7e] rounded-xl">
+            <Pencil size={14} className="mr-2" />
+            Edit Profile
+          </Button>
+        </Link>
       </div>
 
       {/* ================= PROFILE CARD ================= */}
@@ -58,7 +63,7 @@ export default function ProfilePage() {
             <Avatar className="h-20 w-20 border border-white/10">
               {profile?.avatar ? (
                 <Image
-                  src={profile.avatar}
+                  src={profile?.avatar}
                   alt={profile?.name || "User"}
                   width={80}
                   height={80}

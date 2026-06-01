@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation';
-import Footer from '../components/layouts/Footer';
-import Navigation from '../components/layouts/Navigation';
+import { notFound } from "next/navigation";
+import Footer from "../components/layouts/Footer";
+import Navigation from "../components/layouts/Navigation";
 
 export default async function Layout({
   children,
@@ -13,10 +13,10 @@ export default async function Layout({
   if (!lan) notFound();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation lan={lan as 'en' | 'de'} />
+    <div className="h-screen flex flex-col ">
+      <Navigation lan={lan as "en" | "de"} />
       <main className="flex-1">{children}</main>
-      <Footer lan={lan as 'en' | 'de'} />
+      <Footer lan={lan as "en" | "de"} />
     </div>
   );
 }
