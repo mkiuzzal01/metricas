@@ -23,7 +23,7 @@ export function DateInput({
   name,
   label = "Date",
   placeholder = "Select date",
-  className = "mx-auto w-44",
+  className = "mx-auto sm:w-44",
 }: DateInputProps) {
   const { control } = useFormContext();
 

@@ -3,34 +3,69 @@ import { cookies } from "next/headers";
 
 async function getHeaders() {
   const token = (await cookies()).get("metricas_token")?.value;
+
   return {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
+    "Content-Type": "application/json",
+    ...(token && {
+      Authorization: `Bearer ${token}`,
+    }),
   };
 }
 
 export const api = {
-  get: <T>(
+  get: async <T>(
     url: string,
     options?: Omit<Parameters<typeof apiFetch>[1], "method">,
-  ) => apiFetch<T>(url, { ...getHeaders(), ...options, method: "GET" }),
+  ) => {
+    const headers = await getHeaders();
 
-  post: <T>(
+    return apiFetch<T>(url, {
+      ...options,
+      method: "GET",
+      headers,
+    });
+  },
+
+  post: async <T>(
     url: string,
     body?: unknown,
     options?: Omit<Parameters<typeof apiFetch>[1], "method" | "body">,
-  ) => apiFetch<T>(url, { ...getHeaders(), ...options, method: "POST", body }),
+  ) => {
+    const headers = await getHeaders();
 
-  patch: <T>(
+    return apiFetch<T>(url, {
+      ...options,
+      method: "POST",
+      body,
+      headers,
+    });
+  },
+
+  patch: async <T>(
     url: string,
     body?: unknown,
     options?: Omit<Parameters<typeof apiFetch>[1], "method" | "body">,
-  ) => apiFetch<T>(url, { ...getHeaders(), ...options, method: "PATCH", body }),
+  ) => {
+    const headers = await getHeaders();
 
-  delete: <T>(
+    return apiFetch<T>(url, {
+      ...options,
+      method: "PATCH",
+      body,
+      headers,
+    });
+  },
+
+  delete: async <T>(
     url: string,
     options?: Omit<Parameters<typeof apiFetch>[1], "method">,
-  ) => apiFetch<T>(url, { ...getHeaders(), ...options, method: "DELETE" }),
+  ) => {
+    const headers = await getHeaders();
+
+    return apiFetch<T>(url, {
+      ...options,
+      method: "DELETE",
+      headers,
+    });
+  },
 };

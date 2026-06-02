@@ -21,10 +21,7 @@ import Link from "next/link";
 
 export default function ProfilePage() {
   const { data, isLoading } = useGetProfileInfoQuery(undefined);
-
   const profile = data?.data;
-
-  console.log(profile);
 
   if (isLoading) {
     return (

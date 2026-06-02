@@ -13,6 +13,7 @@ import TextInput from "./inputs/TextInput";
 import SubmitButton from "../shared/buttons/SubmitButton";
 import { useParams } from "next/navigation";
 import { DateInput } from "./inputs/DateInput";
+import SocialLogin from "../util/SocilaLogin";
 
 export default function Registration() {
   const params = useParams();
@@ -53,6 +54,10 @@ export default function Registration() {
               <p className="text-sm text-white/50">
                 Join us and start your journey
               </p>
+            </div>
+
+            <div>
+              <SocialLogin />
             </div>
 
             {/* Form Fields */}

@@ -1,6 +1,5 @@
 import SearchInput from "@/app/components/pages/Search";
 import { getDictionary } from "../../dictionaries";
-import { getValueReport } from "@/actions/quires/valuation.api";
 
 interface Props {
   params: Promise<{ lan: "en" | "de" }>;

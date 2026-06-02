@@ -1,20 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useAppSelector } from '@/app/redux/hooks';
-import AnalysisAnimation from '../util/AnalysisAnimation';
+"use client";
+import AnalysisAnimation from "../util/AnalysisAnimation";
+import ErrorMessage from "../message/ErrorMessage";
 
 interface Props {
   dic: any;
-  lan: 'en' | 'de';
+  lan: "en" | "de";
+  isLoading?: boolean;
+  isSuccess?: boolean;
+  isError?: boolean;
+  address: string;
 }
 
-export default function Analyze({ dic, lan }: Props) {
-  const { summaryId } = useAppSelector((state) => state.survey);
-  const addressList = dic.address;
-  const currentAddress = addressList?.find(
-    (item: any) => item.id === summaryId,
-  );
+export default function Analyze({
+  dic,
+  lan,
+  isLoading,
+  isSuccess,
+  isError,
+  address,
+}: Props) {
+  // LOADING STATE
+  if (isLoading) {
+    return (
+      <AnalysisAnimation
+        dic={dic}
+        lan={lan}
+        isSuccess={isSuccess}
+        address={address}
+      />
+    );
+  }
 
-  return (
-    <AnalysisAnimation dic={dic} addr={currentAddress?.addressLong} lan={lan} />
-  );
+  // ERROR STATE
+  if (isError) {
+    const handleRetry = () => {
+      window.location.reload();
+    };
+
+    return (
+      <ErrorMessage
+        title={dic?.error?.title || "Something went wrong!"}
+        message={dic?.error?.message || "Please try again later."}
+        icon="⚠️"
+        buttonText="Try again"
+        action={handleRetry}
+      />
+    );
+  }
+
+  return null;
 }

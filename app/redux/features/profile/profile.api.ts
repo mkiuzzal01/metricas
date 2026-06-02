@@ -27,6 +27,14 @@ export const profileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["profile-info"],
     }),
+
+    deleteAccount: builder.mutation<any, any>({
+      query: (data) => ({
+        url: "/profile-delete",
+        method: "DELETE",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -34,4 +42,5 @@ export const {
   useGetProfileInfoQuery,
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
+  useDeleteAccountMutation,
 } = profileApi;

@@ -13,6 +13,7 @@ import Container from "../shared/Container";
 import AppForm from "./AppForm";
 import TextInput from "./inputs/TextInput";
 import { useSearchParams } from "next/navigation";
+import SocialLogin from "../util/SocilaLogin";
 
 export default function Login() {
   const searchParams = useSearchParams();
@@ -71,6 +72,10 @@ export default function Login() {
                 Welcome back
               </h1>
               <p className="text-sm text-white/50">Login to continue</p>
+            </div>
+
+            <div>
+              <SocialLogin />
             </div>
 
             {/* Inputs */}

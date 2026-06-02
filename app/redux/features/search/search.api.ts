@@ -2,14 +2,25 @@ import { baseApi } from "../../API/baseAPI";
 
 export const searchApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    valuationSearch: builder.query<any, void>({
-      query: () => ({
+    valuationSearch: builder.mutation<any, any>({
+      query: (body) => ({
         url: "/valuation/search",
-        method: "GET",
+        method: "POST",
+        body,
       }),
-      providesTags: ["searchAddress"],
+      invalidatesTags: ["searchAddress"],
+    }),
+
+    valuationReportDowload: builder.mutation<Blob, number>({
+      query: (id) => ({
+        url: `/valuation/report/${id}/pdf`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
     }),
   }),
 });
 
-export const { useValuationSearchQuery } = searchApi;
+export const { useValuationSearchMutation, useValuationReportDowloadMutation } =
+  searchApi;
