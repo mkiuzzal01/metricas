@@ -131,29 +131,34 @@
         { "j": "2025", "p": 22.4 }
       ],
       "infrastruktur": [
-        { "de": "ÖPNV", "en": "ÖPNV", "val": "1 min", "icon": "🚇" },
+        { "de": "ÖPNV", "en": "Transit", "val": "1 min", "icon": "🚇" },
         {
           "de": "Grundschule",
-          "en": "Grundschule",
+          "en": "Primary School",
           "val": "5 min",
           "icon": "🏫"
         },
-        { "de": "Gymnasium", "en": "Gymnasium", "val": "8 min", "icon": "🎓" },
-        { "de": "Hausarzt", "en": "Arzt", "val": "3 min", "icon": "🏥" },
+        {
+          "de": "Gymnasium",
+          "en": "High School",
+          "val": "8 min",
+          "icon": "🎓"
+        },
+        { "de": "Hausarzt", "en": "Doctor", "val": "3 min", "icon": "🏥" },
         {
           "de": "Supermarkt",
-          "en": "Supermarkt",
+          "en": "Supermarket",
           "val": "2 min",
           "icon": "🛒"
         },
-        { "de": "Apotheke", "en": "Apotheke", "val": "2 min", "icon": "💊" },
+        { "de": "Apotheke", "en": "Pharmacy", "val": "2 min", "icon": "💊" },
         {
           "de": "Restaurant",
           "en": "Restaurant",
           "val": "1 min",
           "icon": "🍽"
         },
-        { "de": "Park/Grün", "en": "Park/Grün", "val": "4 min", "icon": "🌳" }
+        { "de": "Park/Grün", "en": "Park/Green", "val": "4 min", "icon": "🌳" }
       ],
       "sozio": {
         "kaufkraft_idx": 128,
@@ -238,29 +243,34 @@
         { "j": "2025", "p": 18.9 }
       ],
       "infrastruktur": [
-        { "de": "ÖPNV", "en": "ÖPNV", "val": "1 min", "icon": "🚇" },
+        { "de": "ÖPNV", "en": "Transit", "val": "1 min", "icon": "🚇" },
         {
           "de": "Grundschule",
-          "en": "Grundschule",
+          "en": "Primary School",
           "val": "7 min",
           "icon": "🏫"
         },
-        { "de": "Gymnasium", "en": "Gymnasium", "val": "10 min", "icon": "🎓" },
-        { "de": "Hausarzt", "en": "Arzt", "val": "4 min", "icon": "🏥" },
+        {
+          "de": "Gymnasium",
+          "en": "High School",
+          "val": "10 min",
+          "icon": "🎓"
+        },
+        { "de": "Hausarzt", "en": "Doctor", "val": "4 min", "icon": "🏥" },
         {
           "de": "Supermarkt",
-          "en": "Supermarkt",
+          "en": "Supermarket",
           "val": "3 min",
           "icon": "🛒"
         },
-        { "de": "Apotheke", "en": "Apotheke", "val": "3 min", "icon": "💊" },
+        { "de": "Apotheke", "en": "Pharmacy", "val": "3 min", "icon": "💊" },
         {
           "de": "Restaurant",
           "en": "Restaurant",
           "val": "1 min",
           "icon": "🍽"
         },
-        { "de": "Park/Grün", "en": "Park/Grün", "val": "6 min", "icon": "🌳" }
+        { "de": "Park/Grün", "en": "Park/Green", "val": "6 min", "icon": "🌳" }
       ],
       "sozio": {
         "kaufkraft_idx": 118,
@@ -345,29 +355,34 @@
         { "j": "2025", "p": 16.8 }
       ],
       "infrastruktur": [
-        { "de": "ÖPNV", "en": "ÖPNV", "val": "2 min", "icon": "🚇" },
+        { "de": "ÖPNV", "en": "Transit", "val": "2 min", "icon": "🚇" },
         {
           "de": "Grundschule",
-          "en": "Grundschule",
+          "en": "Primary School",
           "val": "8 min",
           "icon": "🏫"
         },
-        { "de": "Gymnasium", "en": "Gymnasium", "val": "12 min", "icon": "🎓" },
-        { "de": "Hausarzt", "en": "Arzt", "val": "5 min", "icon": "🏥" },
+        {
+          "de": "Gymnasium",
+          "en": "High School",
+          "val": "12 min",
+          "icon": "🎓"
+        },
+        { "de": "Hausarzt", "en": "Doctor", "val": "5 min", "icon": "🏥" },
         {
           "de": "Supermarkt",
-          "en": "Supermarkt",
+          "en": "Supermarket",
           "val": "4 min",
           "icon": "🛒"
         },
-        { "de": "Apotheke", "en": "Apotheke", "val": "4 min", "icon": "💊" },
+        { "de": "Apotheke", "en": "Pharmacy", "val": "4 min", "icon": "💊" },
         {
           "de": "Restaurant",
           "en": "Restaurant",
           "val": "2 min",
           "icon": "🍽"
         },
-        { "de": "Park/Grün", "en": "Park/Grün", "val": "5 min", "icon": "🌳" }
+        { "de": "Park/Grün", "en": "Park/Green", "val": "5 min", "icon": "🌳" }
       ],
       "sozio": {
         "kaufkraft_idx": 112,

@@ -9,7 +9,14 @@ interface Props {
 export default async function page({ params }: Props) {
   const { lan, id } = await params;
   const dic = await getDictionary(lan);
-  const valueReport = await getValueReport(id);
 
-  return <Summery dic={dic} valueReport={valueReport} />;
+  let valueReport = null;
+
+  if (id === "demo") {
+    valueReport = { data: dic?.summary["01"] };
+  } else {
+    valueReport = await getValueReport(id);
+  }
+
+  return <Summery dic={dic} valueReport={valueReport} id={id} />;
 }

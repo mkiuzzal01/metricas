@@ -1,243 +1,204 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Analyze from "./Analyze";
-import { setSummaryId } from "@/app/redux/features/surveySlice";
-import { useAppDispatch } from "@/app/redux/hooks";
 import { useValuationSearchMutation } from "@/app/redux/features/search/search.api";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-interface AddressItem {
-  id: string | number;
+interface SuggestionItem {
+  id: number;
   address: string;
+  city: string;
+  market_value: number;
+  price_per_sqm: number;
+  confidence: number;
+  location_score: number;
 }
 
 interface Props {
-  reportList?: unknown;
-  dic: {
-    search: {
-      label: string;
-      placeholder: string;
-      examples: string;
-    };
-    address: AddressItem[];
-  };
+  suggestions?: SuggestionItem[];
+  demo?: string;
+  dic: any;
   lan: "en" | "de";
 }
 
-export default function SearchInput({ dic, lan }: Props) {
-  const [address, setAddress] = useState<string>("");
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const [valuationSearch, { isLoading, isSuccess, isError }] =
-    useValuationSearchMutation();
-  const inputRef = useRef<HTMLInputElement>(null);
+export default function SearchInput({
+  dic,
+  lan,
+  suggestions = [],
+  demo,
+}: Props) {
+  const [address, setAddress] = useState("");
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [startAnalyze, setStartAnalyze] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
-  /**
-   * Auto focus
-   */
+  const [valuationSearch, { isLoading }] = useValuationSearchMutation();
+
+  /* ---------------- AUTO FOCUS ---------------- */
   useEffect(() => {
-    const timer = setTimeout(() => {
-      inputRef.current?.focus();
-    }, 50);
-
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => inputRef.current?.focus(), 50);
+    return () => clearTimeout(t);
   }, []);
 
-  /**
-   * Suggestions
-   */
-  const suggestions = useMemo(() => {
+  /* ---------------- FILTER ---------------- */
+  const filteredSuggestions = useMemo(() => {
     const value = query.trim().toLowerCase();
-
     if (!value) return [];
 
-    return dic.address.filter((item) =>
-      item.address.toLowerCase().includes(value),
-    );
-  }, [query, dic.address]);
+    const map = new Map<string, SuggestionItem>();
 
-  /**
-   * Logger
-   */
-  const logSearch = useCallback(
-    (type: "submit" | "suggestion", value: string) => {
-      setAddress(value);
-    },
-    [setAddress],
-  );
+    suggestions.forEach((item) => {
+      const key = `${item.address}-${item.city}`;
+      if (!map.has(key)) map.set(key, item);
+    });
 
-  /**
-   * Start analyze
-   */
-  const startAnalysis = useCallback(
-    (summaryId: string | number | null) => {
-      dispatch(setSummaryId(summaryId));
+    return Array.from(map.values())
+      .filter(
+        (item) =>
+          item.address.toLowerCase().includes(value) ||
+          item.city.toLowerCase().includes(value),
+      )
+      .slice(0, 6);
+  }, [query, suggestions]);
 
-      setOpen(false);
-
-      /**
-       * IMPORTANT:
-       * Show Analyze BEFORE API call
-       */
-      setStartAnalyze(true);
-    },
-    [dispatch],
-  );
-
-  /**
-   * Main search handler
-   */
+  /* ---------------- SEARCH ---------------- */
   const performSearch = useCallback(
-    async (
-      value: string,
-      type: "submit" | "suggestion",
-      summaryId?: string | number | null,
-    ) => {
+    async (value: string, summaryId?: number | string | null) => {
+      if (!value.trim()) return;
+
       try {
-        if (!value.trim()) return;
+        setAddress(value);
 
-        logSearch(type, value);
+        // ✅ SHOW ANIMATION FIRST (CRITICAL FIX)
+        setIsAnalyzing(true);
+        setOpen(false);
 
-        /**
-         * Open Analyze immediately
-         */
-        startAnalysis(summaryId ?? null);
+        // allow UI paint (VERY IMPORTANT)
+        await new Promise((r) => requestAnimationFrame(r));
 
-        const payload = {
-          address: value,
-        };
+        let response;
 
-        const response = await valuationSearch(payload).unwrap();
-
-        if (response.message) {
-          router.push(`/${lan}/summary/${response?.data?.id}`);
+        if (!demo) {
+          response = await valuationSearch({
+            address: value,
+          }).unwrap();
         }
+
+        const id = demo ? demo : response?.data?.id;
+
+        if (!id) {
+          throw new Error("No ID returned");
+        }
+
+        // optional delay so animation is visible (UX boost)
+        setTimeout(() => {
+          router.push(`/${lan}/summary/${id}`);
+        }, 600);
       } catch (err: any) {
-        toast.error(err?.data?.message);
+        toast.error(err?.data?.message || "Search failed");
+        setIsAnalyzing(false);
       }
     },
-    [logSearch, startAnalysis, valuationSearch, router, lan],
+    [demo, lan, router, valuationSearch],
   );
 
-  /**
-   * Suggestion click
-   */
   const handleSelect = useCallback(
-    async (item: AddressItem) => {
+    (item: SuggestionItem) => {
       setQuery(item.address);
-
-      await performSearch(item.address, "suggestion", item.id);
+      performSearch(item.address, item.id);
     },
     [performSearch],
   );
 
-  /**
-   * Search submit
-   */
-  const handleSearch = useCallback(async () => {
+  const handleSearch = useCallback(() => {
     const value = query.trim();
-
     if (!value) return;
 
-    const matchedItem = dic.address.find((item) =>
+    const matched = suggestions.find((item) =>
       item.address.toLowerCase().includes(value.toLowerCase()),
     );
 
-    await performSearch(value, "submit", matchedItem?.id ?? null);
-  }, [query, dic.address, performSearch]);
+    performSearch(value, matched?.id ?? null);
+  }, [query, suggestions, performSearch]);
 
-  /**
-   * Render Analyze Page
-   */
-  if (startAnalyze) {
+  /* ---------------- ANALYZE VIEW ---------------- */
+  if (isAnalyzing) {
     return (
       <Analyze
         dic={dic}
         lan={lan}
         address={address}
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        isError={isError}
+        isLoading={true}
+        isSuccess={false}
+        isError={false}
       />
     );
   }
 
+  /* ---------------- UI ---------------- */
   return (
     <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-6">
       <h1 className="mb-6 text-[10px] font-medium uppercase tracking-[0.25em] text-teal-500">
         {dic.search.label}
       </h1>
 
-      {/* SEARCH INPUT */}
+      {/* INPUT */}
       <div className="relative w-[370px] lg:w-[420px]">
         <input
           ref={inputRef}
           value={query}
           placeholder={dic.search.placeholder}
           disabled={isLoading}
-          className="
-            w-full rounded border border-white/10 bg-[#1a2937]
+          className="w-full rounded border border-white/10 bg-[#1a2937]
             px-6 py-4 text-[15px] text-white
             placeholder:text-[#67829a]
             outline-none transition
-            focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30
-          "
+            focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
           onChange={(e) => {
             setQuery(e.target.value);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          onBlur={() => {
-            setTimeout(() => setOpen(false), 120);
-          }}
+          onBlur={() => setTimeout(() => setOpen(false), 120)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
-            }
+            if (e.key === "Enter") handleSearch();
           }}
         />
 
-        {/* SEARCH BUTTON */}
         <button
           type="button"
           onClick={handleSearch}
           disabled={!query.trim() || isLoading}
-          className="
-            absolute right-2 top-1/2 flex h-10 w-10
+          className="absolute right-2 top-1/2 flex h-10 w-10
             -translate-y-1/2 items-center justify-center
-            rounded bg-teal-500 text-white
-            transition hover:bg-teal-400
-            disabled:cursor-not-allowed disabled:opacity-50
-          "
+            rounded bg-teal-500 text-white"
         >
           🔍
         </button>
       </div>
 
       {/* SUGGESTIONS */}
-      {open && suggestions.length > 0 && (
+      {open && filteredSuggestions.length > 0 && (
         <div className="mt-3 flex w-[370px] flex-col gap-1 lg:w-[420px]">
-          {suggestions.map((item) => (
+          {filteredSuggestions.map((item) => (
             <button
               key={item.id}
-              type="button"
-              disabled={isLoading}
               onMouseDown={() => handleSelect(item)}
-              className="
-                group flex items-center gap-4 rounded
+              className="group flex flex-col gap-1 rounded
                 border border-white/5 bg-white/5
-                px-4 py-2.5 transition-all duration-200
-                hover:border-[#5a9e8e]/30 hover:bg-white/10
-              "
+                px-4 py-2.5 text-left"
             >
-              <div className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#5a9e8e]" />
+              <div className="flex items-center gap-2">
+                <div className="h-[5px] w-[5px] rounded-full bg-[#5a9e8e]" />
+                <div className="text-[13px] text-white">{item.address}</div>
+              </div>
 
-              <div className="text-left text-[13px] text-white">
-                {item.address}
+              <div className="pl-4 text-[11px] text-[#7f8ea3]">
+                {item.city} · € {item.market_value.toLocaleString("de-DE")} ·{" "}
+                {item.price_per_sqm} €/m²
               </div>
             </button>
           ))}

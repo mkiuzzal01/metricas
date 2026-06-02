@@ -82,16 +82,16 @@ interface ValueReportData {
 }
 
 interface ValueReportResponse {
-  success: boolean;
   data: ValueReportData;
 }
 
 interface Props {
   valueReport: ValueReportResponse;
   dic: any;
+  id?: any;
 }
 
-export default function Summery({ dic, valueReport }: Props) {
+export default function Summery({ dic, valueReport, id }: Props) {
   const [downLoadReport, { isLoading }] = useValuationReportDowloadMutation();
   const labels = dic?.summaryLabel || [];
   const actionButtons = dic?.actionButton || [];
@@ -121,7 +121,7 @@ export default function Summery({ dic, valueReport }: Props) {
     }
   };
 
-  if (!data) return <Empty />;
+  if (!valueReport) return <Empty />;
 
   return (
     <div className="relative z-10 max-w-3xl mx-auto px-5 pb-24">
@@ -461,13 +461,17 @@ export default function Summery({ dic, valueReport }: Props) {
 
       {/* ACTIONS */}
       <div className="grid text-center grid-cols-2 gap-2 mt-9">
-        <button
-          onClick={() => handleDownLoadReport(valueReport?.data?.id)}
-          disabled={isLoading}
-          className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-[rgba(90,158,142,0.9)] text-[#080d12] hover:bg-[rgba(90,158,142,1)] transition-colors cursor-pointer disabled:opacity-50"
-        >
-          {isLoading ? "Downloading..." : actionButtons?.[0] || "Download PDF"}
-        </button>
+        {id !== "demo" && (
+          <button
+            onClick={() => handleDownLoadReport(valueReport?.data?.id)}
+            disabled={isLoading}
+            className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-[rgba(90,158,142,0.9)] text-[#080d12] hover:bg-[rgba(90,158,142,1)] transition-colors cursor-pointer disabled:opacity-50"
+          >
+            {isLoading
+              ? "Downloading..."
+              : actionButtons?.[0] || "Download PDF"}
+          </button>
+        )}
 
         <Link href="/search">
           <div className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-transparent border border-white/10 text-[#7f8ea3] hover:border-[rgba(90,158,142,0.5)] hover:text-[rgba(90,158,142,0.9)] transition-colors cursor-pointer">

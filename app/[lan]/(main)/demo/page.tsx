@@ -8,5 +8,5 @@ interface Props {
 export default async function page({ params }: Props) {
   const { lan } = await params;
   const dic = await getDictionary(lan);
-  return <SearchInput dic={dic} lan={lan} />;
+  return <SearchInput dic={dic} lan={lan} demo="demo" />;
 }
