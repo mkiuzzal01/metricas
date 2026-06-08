@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -32,7 +32,7 @@ body {
 
 /* Subtle background gradient overlay */
 .metricas-bg::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background:

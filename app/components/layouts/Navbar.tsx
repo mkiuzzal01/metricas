@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Home, Menu, X } from "lucide-react";
 import LanToggle from "../shared/buttons/LanToggle";
 import { NavigationLink } from "./navigation-links";
+import { usePathname } from "next/navigation";
 
 interface Props {
   lan: "en" | "de";
@@ -14,6 +15,7 @@ interface Props {
 
 export default function Navbar({ lan, navLinks, asideLinks, dic }: Props) {
   const [showMenu, setShowMenu] = useState(false);
+  const pathName = usePathname();
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0a0e14]/80 backdrop-blur-xl">
@@ -33,15 +35,25 @@ export default function Navbar({ lan, navLinks, asideLinks, dic }: Props) {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-2 lg:flex">
-          {navLinks?.map((link) => (
+          <div>
             <Link
-              key={link?.href}
-              href={link?.href}
-              className="rounded-md px-4 py-2 text-sm font-medium text-white/60 transition-all duration-200 hover:bg-white/5 hover:text-white"
+              href={`/${lan}/`}
+              className={`rounded-md px-4 py-2 text-sm font-medium text-white/60 transition-all duration-200 hover:bg-white/5 hover:text-white`}
             >
-              {link?.label}
+              <Home size={18} className="inline-block" />{" "}
             </Link>
-          ))}
+          </div>
+          {navLinks
+            ?.filter((link) => !link.label.includes("Home"))
+            .map((link) => (
+              <Link
+                key={link?.href}
+                href={link?.href}
+                className="rounded-md px-4 py-2 text-sm font-medium text-white/60 transition-all duration-200 hover:bg-white/5 hover:text-white"
+              >
+                {link?.label}
+              </Link>
+            ))}
 
           <div className="ml-2">
             <LanToggle />

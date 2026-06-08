@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Analyze from "./Analyze";
@@ -63,6 +64,17 @@ export default function SearchInput({
       )
       .slice(0, 6);
   }, [query, suggestions]);
+
+  // Example:
+  const exampleCities = useMemo(() => {
+    const set = new Set<string>();
+
+    suggestions.forEach((item) => {
+      if (item.city) set.add(item.city);
+    });
+
+    return Array.from(set).slice(0, 6);
+  }, [suggestions]);
 
   /* ---------------- SEARCH ---------------- */
   const performSearch = useCallback(
@@ -202,6 +214,32 @@ export default function SearchInput({
               </div>
             </button>
           ))}
+        </div>
+      )}
+
+      {/* EXAMPLES */}
+
+      {/* EXAMPLE CITIES (FROM DATA) */}
+      {exampleCities.length > 0 && (
+        <div className="mt-6 w-[370px] lg:w-[420px]">
+          <h4 className="mb-2 text-[11px] uppercase tracking-widest text-[#7f8ea3]">
+            {dic.search.examples}:
+          </h4>
+
+          <div className="flex flex-wrap gap-2">
+            {exampleCities.map((city) => (
+              <button
+                key={city}
+                onMouseDown={() => {
+                  setQuery(city);
+                  performSearch(city);
+                }}
+                className="rounded border border-white/10 bg-white/5 px-3 py-1 text-[12px] text-white hover:bg-white/10"
+              >
+                {city}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

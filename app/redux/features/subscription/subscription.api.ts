@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseAPI";
 
 export const suscriptionApi = baseApi.injectEndpoints({

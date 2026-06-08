@@ -1,8 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../lib/Firebase";
+import { auth, googleProvider } from "../provider/Firebase";
+import { useGoogleLoginMutation } from "@/app/redux/features/auth/auth.api";
+import { toast } from "react-toastify";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { setUser } from "@/app/redux/features/auth/authSlice";
 
 const GoogleIcon = () => (
   <svg
@@ -31,29 +37,55 @@ const GoogleIcon = () => (
 );
 
 export default function SocialLogin() {
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params.lan as string) || "en";
   const [loading, setLoading] = useState(false);
+  const [login] = useGoogleLoginMutation();
+
+  const redirectPath = redirectUrl || `/${locale}`;
 
   const handleGoogleLogin = async () => {
     if (loading) return;
 
     try {
       setLoading(true);
-
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(result);
       const user = result.user;
-
       const token = await user.getIdToken();
 
-      console.log("User:", {
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        uid: user.uid,
+      const res = await login({
         token,
-      });
-    } catch (error) {
-      console.error("Google login failed:", error);
+        provider: "google",
+      }).unwrap();
+
+      console.log(res);
+
+      if (res?.message) {
+        toast.success(res.message);
+        dispatch(
+          setUser({
+            user: {
+              id: res.data.user.id,
+              email: res.data.user.email,
+              role: res.data.user.role,
+              name: res.data.user.name,
+              avatar: res.data.user.avatar,
+            },
+            token: res.data.token,
+            tokenType: res.data.token_type,
+            expiresAt: res.data.expires_in,
+          }),
+        );
+        document.cookie = `metricas_token=${res.data.token}; path=/; max-age=86400`;
+        router.push(redirectPath);
+        router.refresh();
+      }
+    } catch (error: any) {
+      toast.error(error.data.message || "Google login failed");
     } finally {
       setLoading(false);
     }

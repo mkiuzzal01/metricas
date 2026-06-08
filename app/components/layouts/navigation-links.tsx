@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getDictionary } from "@/app/[lan]/dictionaries";
 import { cookies } from "next/headers";
 import { JSXElementConstructor } from "react";
@@ -18,6 +19,10 @@ export const getNavigationLinks = async (
     {
       label: token ? dict.nav.dashboard : dict.nav.login,
       href: token ? `/${lan}/profile` : `/${lan}/login`,
+    },
+    {
+      label: dict.nav.home,
+      href: `/${lan}/`,
     },
     {
       label: dict.nav.pricing,

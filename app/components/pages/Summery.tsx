@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
-import { eur, safe } from "../lib/currency";
+import { eur, safe } from "../util/currency";
 import SectionHeader from "../shared/SectionHeader";
 import KPICard from "../shared/KPICard";
 import SubScoreBar from "../shared/SubScoreBar";
@@ -86,12 +86,13 @@ interface ValueReportResponse {
 }
 
 interface Props {
+  lan?: "en" | "de";
   valueReport: ValueReportResponse;
   dic: any;
   id?: any;
 }
 
-export default function Summery({ dic, valueReport, id }: Props) {
+export default function Summery({ dic, valueReport, id, lan }: Props) {
   const [downLoadReport, { isLoading }] = useValuationReportDowloadMutation();
   const labels = dic?.summaryLabel || [];
   const actionButtons = dic?.actionButton || [];
@@ -473,7 +474,7 @@ export default function Summery({ dic, valueReport, id }: Props) {
           </button>
         )}
 
-        <Link href="/search">
+        <Link href={` ${id === "demo" ? `/${lan}/demo` : `/${lan}/search`} `}>
           <div className="py-3.5 rounded text-[11px] font-semibold uppercase tracking-[0.18em] bg-transparent border border-white/10 text-[#7f8ea3] hover:border-[rgba(90,158,142,0.5)] hover:text-[rgba(90,158,142,0.9)] transition-colors cursor-pointer">
             {actionButtons?.[1] || "New Search"}
           </div>

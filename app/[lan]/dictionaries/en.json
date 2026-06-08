@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Home",
     "dashboard": "Dashboard",
     "pricing": "Pricing",
     "login": "Login"
@@ -415,5 +416,5 @@
       "angebote_aktuell": 35
     }
   },
-  "actionButton": ["Download PDF", "Start Evaluation"]
+  "actionButton": ["Download PDF", "Again Valuation"]
 }

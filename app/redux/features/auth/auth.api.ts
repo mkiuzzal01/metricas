@@ -1,20 +1,20 @@
-import { baseApi } from '../../API/baseAPI';
-import { logout, setUser } from './authSlice';
+import { baseApi } from "../../API/baseAPI";
+import { logout, setUser } from "./authSlice";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (data) => ({
-        url: '/register',
-        method: 'POST',
+        url: "/register",
+        method: "POST",
         body: data,
       }),
     }),
 
     login: builder.mutation({
       query: (data) => ({
-        url: '/login',
-        method: 'POST',
+        url: "/login",
+        method: "POST",
         body: data,
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -29,61 +29,85 @@ export const authApi = baseApi.injectEndpoints({
             );
           }
         } catch (error) {
-          console.error('Login error:', error);
+          console.error("Login error:", error);
+        }
+      },
+    }),
+
+    googleLogin: builder.mutation({
+      query: (data) => ({
+        url: "/social/login",
+        method: "POST",
+        body: data,
+      }),
+
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.data?.accessToken && data?.data?.user) {
+            dispatch(
+              setUser({
+                user: data.data.user,
+                token: data.data.accessToken,
+              }),
+            );
+          }
+        } catch (error) {
+          console.error("Google Login error:", error);
         }
       },
     }),
 
     verifyOtp: builder.mutation({
       query: (data) => ({
-        url: '/verify-otp',
-        method: 'POST',
+        url: "/verify-otp",
+        method: "POST",
         body: data,
       }),
     }),
 
     resendOTP: builder.mutation({
       query: (data) => ({
-        url: '/resend-otp',
-        method: 'POST',
+        url: "/resend-otp",
+        method: "POST",
         body: data,
       }),
     }),
 
     forgot: builder.mutation({
       query: (data) => ({
-        url: '/forgot-password',
-        method: 'POST',
+        url: "/forgot-password",
+        method: "POST",
         body: data,
       }),
     }),
 
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: '/reset-password',
-        method: 'POST',
+        url: "/reset-password",
+        method: "POST",
         body: data,
       }),
     }),
 
     getCurrentUser: builder.query({
       query: () => ({
-        url: '/auth/me',
-        method: 'GET',
+        url: "/auth/me",
+        method: "GET",
       }),
     }),
 
     logout: builder.mutation({
       query: () => ({
-        url: '/auth/logout',
-        method: 'POST',
+        url: "/auth/logout",
+        method: "POST",
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           dispatch(logout());
         } catch (error) {
-          console.error('Logout error:', error);
+          console.error("Logout error:", error);
         }
       },
     }),
@@ -95,6 +119,7 @@ export const {
   useRegisterMutation,
   useGetCurrentUserQuery,
   useLogoutMutation,
+  useGoogleLoginMutation,
   useVerifyOtpMutation,
   useResendOTPMutation,
   useForgotMutation,

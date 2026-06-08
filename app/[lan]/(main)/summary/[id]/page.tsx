@@ -18,5 +18,5 @@ export default async function page({ params }: Props) {
     valueReport = await getValueReport(id);
   }
 
-  return <Summery dic={dic} valueReport={valueReport} id={id} />;
+  return <Summery lan={lan} dic={dic} valueReport={valueReport} id={id} />;
 }
