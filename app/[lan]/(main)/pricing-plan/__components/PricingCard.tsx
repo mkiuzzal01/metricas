@@ -21,12 +21,17 @@ export default function PricingCard({ plan, lan }: Props) {
 
       toast.success(res?.message || "Subscription successful");
 
-      // Redirect to payment page
-      if (res?.data?.payment_url) {
-        router.push(res.data.payment_url);
+      if (res?.data?.checkout_url) {
+        // Open Stripe Checkout in a new tab
+        window.open(res.data.checkout_url, "_blank");
+
+        // Redirect current tab to home page
+        router.push(`/${lan}`);
+        return;
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
+
       if (error?.status === 401) {
         router.push(`/${lan}/login?redirect=/${lan}/pricing-plan`);
       }
